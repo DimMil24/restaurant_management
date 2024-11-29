@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<script>0</script>
+<div th:insert="~{fragments/navHeader::navHeader}"></div>
+
+<div class="container">
+    <h1>Details</h1>
+    <hr/>
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Name
+        </dt>
+        <dd class = "col-sm-10">
+            <span th:text="${product.name}"></span>
+        </dd>
+        <dt class = "col-sm-2">
+            Price
+        </dt>
+        <dd class = "col-sm-10">
+            <span th:text="${product.price}"></span>
+        </dd>
+        <dt class = "col-sm-2">
+            Category
+        </dt>
+        <dd class = "col-sm-10">
+            <span th:text="${product.category.name}"></span>
+        </dd>
+        <dt class = "col-sm-2">
+            Availability
+        </dt>
+        <dd class = "col-sm-10">
+            <span th:text="${product.Available}"></span>
+        </dd>
+    </dl>
+</div>
+
+
+
+
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/feather-icons"></script>
+</body>
+</html>

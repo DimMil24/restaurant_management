@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap demo</title>
+  <link href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<script>0</script>
+<div th:insert="~{fragments/navHeader::navHeader}"></div>
+
+<div class="container">
+  <h1>Orders</h1>
+
+  <form method="get" th:action="@{/order/orderForm}">
+    <button type="submit" class="btn btn-primary">
+      Create New Order
+    </button>
+  </form>
+  <hr/>
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Date</th>
+      <th scope="col">Open</th>
+      <th scope="col">Product</th>
+      <th scope="col">Delete</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="o : ${orderList}">
+      <td class="align-middle" th:text="${o.id}"></td>
+      <td class="align-middle" th:text="${o.date}"></td>
+      <td class="align-middle" th:text="${o.open}"></td>
+      <td class="align-middle">
+        <a th:href="@{'/order/details/' + ${o.id}}">
+          Details
+        </a>
+      </td>
+      <td class="align-middle">
+        <form method="post" th:action="@{/order/deleteOrder/{id}(id=${o.id})}">
+          <button type="submit" class="btn btn-danger" name="submit" value="value">
+            Delete
+          </button>
+        </form>
+      </td>
+      <td th:if="${o.open == true}" class="align-middle">
+        <form method="post" th:action="@{/order/complete/{id}(id=${o.id})}">
+        <button type="submit" class="btn" name="submit" value="value">
+          Complete Order
+        </button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+<!--  <div class="modal fade" id="newOrderModal" tabindex="-1" aria-labelledby="newOrderModal" aria-hidden="true">-->
+<!--    <div class="modal-dialog">-->
+<!--      <div class="modal-content">-->
+<!--        <div class="modal-header">-->
+<!--          <h1 class="modal-title fs-5" id="exampleModalLabel">Choose Table</h1>-->
+<!--          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--        </div>-->
+<!--        <form method="get" th:action="@{/order/orderForm}">-->
+<!--          <div class="modal-body">-->
+<!--            <select class="form-select" required id="tableId" name="tableId">-->
+<!--              <option th:each="t : ${tables}" th:value="${t.id}" th:text="${t.id}"></option>-->
+<!--            </select>-->
+<!--          </div>-->
+<!--          <div class="modal-footer">-->
+<!--            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+<!--            <button type="submit" class="btn btn-primary">Add new Order</button>-->
+<!--          </div>-->
+<!--        </form>-->
+
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+</div>
+
+
+
+
+
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

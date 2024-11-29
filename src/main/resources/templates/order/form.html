@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap demo</title>
+  <link href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<script>0</script>
+<div th:insert="~{fragments/navHeader::navHeader}"></div>
+
+<div class="container">
+  <form method="post" th:action="@{'/order/newOrder'}">
+    <div id="productList">
+    <div class="row">
+      <div class="col-sm-8 mt-5 mb-3">
+        <label class="form-label" for="products">Products</label>
+        <select class="form-select" required id="products" name="products">
+          <option th:each="p : ${products}" th:value="${p.id}" th:text="${p.name}"></option>
+        </select>
+      </div>
+      <div class="col-sm-4 mt-5 mb-3">
+        <label for="quantity" class="form-label">Quantity</label>
+        <input type="number" required class="form-control" id="quantity" name="quantity" min="0" step="1" placeholder="quantity">
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="addProduct()">Add Another Product</button>
+    <button type="submit" class="btn btn-success">Submit</button>
+    </div>
+  </form>
+</div>
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  let productCount = 1;
+  let selectElement = document.querySelector('[name=products]');
+  let optionNames = [...selectElement.options].map(o => o.text)
+  let optionValues = [...selectElement.options].map(o => o.value)
+ 
+    function addProduct() {
+      const productList = document.getElementById('productList');
+      const newProduct = document.createElement('div');
+      newProduct.classList.add('row');
+      newProduct.innerHTML = `
+    <div class="col-sm-8 mt-5 mb-3">
+      <label class="form-label" for="products">Products</label>
+      <select class="form-select" required id="generatedSelect${productCount}" name="products"></select>
+    </div>
+    <div class="col-sm-4 mt-5 mb-3">
+      <label for="quantity" class="form-label">Quantity</label>
+      <input type="number" required class="form-control" id="quantity" name="quantity" min="0" step="1" placeholder="quantity">
+    </div>
+      `;
+      productList.appendChild(newProduct);
+      let selected = document.getElementById('generatedSelect' + productCount);
+
+      for (let i = 0; i < optionValues.length; i++) {
+         selected.options[selected.options.length] = new Option(optionNames[i], optionValues[i]);
+      }
+      productCount++;
+    }
+</script>
+</body>
+</html>
