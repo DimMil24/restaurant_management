@@ -1,98 +1,97 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bootstrap demo</title>
-  <link href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Product</title>
 </head>
 <body>
 <script>0</script>
-<div th:insert="~{fragments/navHeader::navHeader}"></div>
 
-<div class="container">
-  <h1>Products</h1>
+<section>
+  <div class="container">
+    <h1>Products</h1>
 
-  <a href="#" data-bs-toggle="modal" data-bs-target="#newProductModal">
-    Create New Product
-  </a>
+    <a href="#" data-bs-toggle="modal" data-bs-target="#newProductModal">
+      Create New Product
+    </a>
 
-  <table class="table table-striped">
-    <thead>
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Name</th>
-      <th scope="col">Price</th>
-      <th scope="col">Category</th>
-      <th scope="col">Available</th>
-      <th scope="col"></th>
-      <th scope="col"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="p : ${productList}">
-      <td class="align-middle" th:text="${p.id}"></td>
-      <td class="align-middle" th:text="${p.name}"></td>
-      <td class="align-middle" th:text="${p.price}"></td>
-      <td class="align-middle" th:text="${p.category}"></td>
-      <td class="align-middle" th:text="${p.available}"></td>
-      <td class="align-middle">
-        <a th:href="@{/product/details/{restaurant_id}/{id}(id=${p.id} ,restaurant_id=${p.restaurant.id})}">
-          Details
-        </a>
-      </td>
-      <td class="align-middle">
-        <form method="post" th:action="@{/product/deleteProduct/{restaurant_id}/{id}(id=${p.id} ,restaurant_id=${p.restaurant.id})}">
-          <button type="submit" class="btn btn-danger" name="submit" value="value">
-            Delete
-          </button>
-        </form>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Category</th>
+        <th scope="col">Available</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="p : ${productList}">
+        <td class="align-middle" th:text="${p.id}"></td>
+        <td class="align-middle" th:text="${p.name}"></td>
+        <td class="align-middle" th:text="${p.price}"></td>
+        <td class="align-middle" th:text="${p.category}"></td>
+        <td class="align-middle" th:text="${p.available}"></td>
+        <td class="align-middle">
+          <a th:href="@{/product/details/{restaurant_id}/{id}(id=${p.id} ,restaurant_id=${p.restaurant.id})}">
+            Details
+          </a>
+        </td>
+        <td class="align-middle">
+          <form method="post" th:action="@{/product/deleteProduct/{restaurant_id}/{id}(id=${p.id} ,restaurant_id=${p.restaurant.id})}">
+            <button type="submit" class="btn btn-danger" name="submit" value="value">
+              Delete
+            </button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
 
 
-  <div class="modal fade" id="newProductModal" tabindex="-1" aria-labelledby="newProductModal" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">New Product</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal fade" id="newProductModal" tabindex="-1" aria-labelledby="newProductModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">New Product</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form method="POST" th:action="@{/product/newProduct}">
+            <div class="modal-body">
+                <div class="row align-items-center">
+                  <div class="col-4">
+                    <div class="form-floating mb-3">
+                      <input type="text" required class="form-control" id="name" name="name" placeholder="name">
+                      <label for="name" class="form-label">Name</label>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-floating mb-3">
+                      <input type="number" required class="form-control" id="price" name="price" min="0" step=".01" placeholder="price">
+                      <label for="price" class="form-label">Price</label>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <label class="visually-hidden" for="category">Category</label>
+                    <select class="form-select" required id="category" name="category">
+                      <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
+                    </select>
+                  </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Add new Product</button>
+            </div>
+          </form>
         </div>
-        <form method="POST" th:action="@{/product/newProduct}">
-          <div class="modal-body">
-              <div class="row align-items-center">
-                <div class="col-4">
-                  <div class="form-floating mb-3">
-                    <input type="text" required class="form-control" id="name" name="name" placeholder="name">
-                    <label for="name" class="form-label">Name</label>
-                  </div>
-                </div>
-                <div class="col-4">
-                  <div class="form-floating mb-3">
-                    <input type="number" required class="form-control" id="price" name="price" min="0" step=".01" placeholder="price">
-                    <label for="price" class="form-label">Price</label>
-                  </div>
-                </div>
-                <div class="col-4">
-                  <label class="visually-hidden" for="category">Category</label>
-                  <select class="form-select" required id="category" name="category">
-                    <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
-                  </select>
-                </div>
-              </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Add new Product</button>
-          </div>
-        </form>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

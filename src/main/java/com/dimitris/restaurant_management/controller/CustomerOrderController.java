@@ -30,7 +30,7 @@ public class CustomerOrderController {
 
     @GetMapping("/orderForm")
     public String addOrder(Model model) {
-        model.addAttribute("products", productService.findAllFiltered());
+        model.addAttribute("products", productService.getAllProducts());
         return "order/form";
     }
 

@@ -7,13 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 @SpringBootApplication
 public class RestaurantManagementApplication {
@@ -30,16 +24,16 @@ public class RestaurantManagementApplication {
 							 PasswordEncoder passwordEncoder) {
 		return args -> {
 
-			User tassos = new User(null,"Tassos", passwordEncoder.encode("123"), UserRoles.ROLE_OWNER,null);
-			User atzar = new User(null,"Atzar",passwordEncoder.encode("123"),UserRoles.ROLE_OWNER,null);
-			User admin = new User(null,"Admin",passwordEncoder.encode("123"),UserRoles.ROLE_ADMIN,null);
+			User tassos = new User("Tassos", passwordEncoder.encode("123"), UserRoles.ROLE_OWNER,null);
+			User atzar = new User("Atzar",passwordEncoder.encode("123"),UserRoles.ROLE_OWNER,null);
+			User admin = new User("Admin",passwordEncoder.encode("123"),UserRoles.ROLE_ADMIN,null);
 
 			userRepository.save(tassos);
 			userRepository.save(atzar);
 			userRepository.save(admin);
 
-			Restaurant restaurant1 = new Restaurant(null,"Tassos",true,"Tassoss",tassos);
-			Restaurant restaurant2 = new Restaurant(null,"Atzar",true,"Atzar's",atzar);
+			Restaurant restaurant1 = new Restaurant("Tassos",true,"Tassoss",tassos);
+			Restaurant restaurant2 = new Restaurant("Atzar",true,"Atzar's",atzar);
 			restaurantRepository.save(restaurant1);
 			restaurantRepository.save(restaurant2);
 

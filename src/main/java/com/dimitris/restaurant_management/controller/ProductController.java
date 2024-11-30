@@ -43,13 +43,13 @@ public class ProductController {
                              @RequestParam Double price,
                              @RequestParam ProductCategory category,
                              @AuthenticationPrincipal User user) {
-        productService.addProduct(name,price,category,user.getRestaurant());
+        productService.addProduct(productService.generateProduct(name,price,category,user.getRestaurant()));
         return "redirect:/product";
     }
 
     @PostMapping("/deleteProduct/{restaurant_id}/{id}")
     public String deleteProduct(@PathVariable UUID restaurant_id, @PathVariable Long id) {
-        productService.deleteProduct(restaurant_id, id);
+        productService.deleteProduct(productService.findProduct(restaurant_id,id));
         return "redirect:/product";
     }
 }

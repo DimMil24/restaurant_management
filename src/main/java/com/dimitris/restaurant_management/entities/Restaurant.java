@@ -24,8 +24,7 @@ public class Restaurant {
     public Restaurant() {
     }
 
-    public Restaurant(UUID id, String name, boolean isOpen, String description,User user) {
-        Id = id;
+    public Restaurant(String name, boolean isOpen, String description,User user) {
         this.name = name;
         this.isOpen = isOpen;
         this.description = description;

@@ -19,6 +19,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/","/register/**" ,"/lib/**", "/error/**","/images/**").permitAll()
                         .requestMatchers("/product").hasAnyRole("OWNER","ADMIN")
                         .requestMatchers("/table").hasAnyRole("OWNER","ADMIN")
                         .requestMatchers("/order").hasAnyRole("OWNER","ADMIN")
@@ -32,6 +33,4 @@ public class SecurityConfig {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 }

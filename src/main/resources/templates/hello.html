@@ -1,22 +1,40 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Home</title>
 </head>
 <body>
 <script>0</script>
 
-<div th:insert="~{fragments/navHeader::navHeader}"></div>
+<section>
+    <div class="container">
+        <h1>Hello</h1>
+        <div sec:authorize="isAuthenticated()">
+            <h2 th:text="${message}"></h2>
+        </div>
+        <div class="row">
+            <th:block th:each="r : ${restaurants}">
+                <div class="col-md-3">
+                    <div class="card" style="width: 12rem;">
+                        <img th:src="@{images/restaurant_sample.jpg}" class="card-img-top" alt="damn">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${r.name}"></h5>
+                            <p class="card-text" th:text="${r.description}"></p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title" th:text="${r.user.username}"></h3>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</section>
 
-<div class="container">
-    <h1>Hello, <span th:text="${message}"></span>!</h1>
-</div>
 
-
-
-<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
