@@ -42,8 +42,9 @@ public class ProductController {
     public String addProduct(@RequestParam String name,
                              @RequestParam Double price,
                              @RequestParam ProductCategory category,
+                             @RequestParam String description,
                              @AuthenticationPrincipal User user) {
-        productService.addProduct(productService.generateProduct(name,price,category,user.getRestaurant()));
+        productService.addProduct(productService.generateProduct(name,price,category,description,user.getRestaurant()));
         return "redirect:/product";
     }
 

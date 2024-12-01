@@ -34,8 +34,8 @@ public class ProductService {
     }
 
     @PostAuthorize("returnObject.restaurant.user.username == authentication.name")
-    public Product generateProduct(String name, Double price, ProductCategory productCategory, Restaurant restaurant) {
-        return new Product(name, BigDecimal.valueOf(price),productCategory,true,null,restaurant);
+    public Product generateProduct(String name, Double price, ProductCategory productCategory, String description, Restaurant restaurant) {
+        return new Product(name, BigDecimal.valueOf(price),productCategory,true,description,restaurant);
     }
 
     public void addProduct(Product product) {

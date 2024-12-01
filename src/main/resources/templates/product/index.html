@@ -80,6 +80,12 @@
                       <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
                     </select>
                   </div>
+                  <div class="col-4">
+                    <div class="form-floating mb-3">
+                      <input type="text" required class="form-control" id="description" name="description" placeholder="desc">
+                      <label for="description" class="form-label">Description</label>
+                    </div>
+                  </div>
                 </div>
             </div>
             <div class="modal-footer">

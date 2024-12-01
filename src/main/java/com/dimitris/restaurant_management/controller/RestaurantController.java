@@ -22,6 +22,6 @@ public class RestaurantController {
     public String restaurant(@PathVariable UUID restaurantId, Model model) {
         model.addAttribute("restaurant",restaurantService.getRestaurantById(restaurantId));
         model.addAttribute("products",restaurantService.getProductsByRestaurant(restaurantId));
-        return "restaurant";
+        return "restaurant/index";
     }
 }

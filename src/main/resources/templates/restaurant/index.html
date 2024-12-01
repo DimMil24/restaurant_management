@@ -1,14 +1,37 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}">
+<html lang="en" th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Restaurant</title>
 </head>
 <body>
 <section>
-    <div class="container">
-        <div class="row">
+    <div class="container-md">
+        <div class="row mt-2">
+            <div class="col-3 mt-4">
 
+            </div>
+            <div class="col-md-6">
+                <th:block th:each="p : ${products}">
+                    <ul class="list-group mt-4">
+                        <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="fw-bold" th:text="${p.name}"></div>
+                                <div th:text="${p.description}"></div>
+                                <div th:text="${p.price} + ' €' "></div>
+                            </div>
+                            <div>
+                                <i data-feather="plus"></i>
+                            </div>
+                        </li>
+                    </ul>
+                </th:block>
+            </div>
+            <div class="col-3 mt-4">
+                <div class="d-flex justify-content-center">
+                    Hi
+                </div>
+            </div>
         </div>
     </div>
 </section>
