@@ -16,8 +16,7 @@ public class Restaurant implements Serializable {
     private String description;
 
     @JsonIgnore
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne(mappedBy = "restaurant")
     private User user;
 
 

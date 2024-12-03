@@ -2,12 +2,16 @@ package com.dimitris.restaurant_management;
 
 import com.dimitris.restaurant_management.entities.*;
 import com.dimitris.restaurant_management.repositories.*;
+import com.dimitris.restaurant_management.services.RestaurantService;
+import com.dimitris.restaurant_management.services.RoleService;
+import com.dimitris.restaurant_management.services.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.math.BigDecimal;
+import java.util.List;
 
 @SpringBootApplication
 public class RestaurantManagementApplication {
@@ -17,30 +21,31 @@ public class RestaurantManagementApplication {
 	}
 
 	@Bean
-	CommandLineRunner runner(CustomerOrderRepository customerOrderRepository,
-							 ProductRepository productRepository,
-							 RestaurantRepository restaurantRepository,
-							 UserRepository userRepository,
+	CommandLineRunner runner(ProductRepository productRepository,
+							 RestaurantService restaurantService,
+							 UserService userService,
+							 RoleService roleService,
 							 PasswordEncoder passwordEncoder) {
 		return args -> {
 
-			User tassos = new User("Tassos", passwordEncoder.encode("123"), UserRoles.ROLE_OWNER,null);
-			User atzar = new User("Atzar",passwordEncoder.encode("123"),UserRoles.ROLE_OWNER,null);
-			User admin = new User("Admin",passwordEncoder.encode("123"),UserRoles.ROLE_ADMIN,null);
+			roleService.createRole("ROLE_ADMIN");
+			roleService.createRole("ROLE_USER");
+			roleService.createRole("ROLE_OWNER");
 
-			userRepository.save(tassos);
-			userRepository.save(atzar);
-			userRepository.save(admin);
+			var user1 = userService.createUser("Tassos", passwordEncoder.encode("123"));
+			var user2 = userService.createUser("Atzar", passwordEncoder.encode("123"));
+			var user3 = userService.createUser("Admin", passwordEncoder.encode("123"));
 
-			Restaurant restaurant1 = new Restaurant("Tassos",true,"Tassoss",tassos);
-			Restaurant restaurant2 = new Restaurant("Atzar",true,"Atzar's",atzar);
-			restaurantRepository.save(restaurant1);
-			restaurantRepository.save(restaurant2);
+			roleService.addRolesToUser(List.of("ROLE_OWNER", "ROLE_ADMIN"), user1);
+			roleService.addRolesToUser(List.of("ROLE_OWNER", "ROLE_ADMIN"),user2);
+			roleService.addRolesToUser(List.of("ROLE_ADMIN"),user3);
 
-			tassos.setRestaurant(restaurant1);
-			atzar.setRestaurant(restaurant2);
-			userRepository.save(tassos);
-			userRepository.save(atzar);
+			var restaurant1 = restaurantService.addRestaurant("Tassos","Magazi tou Tassou");
+			var restaurant2 = restaurantService.addRestaurant("Atzar","Atzar's");
+
+			userService.associateUserToRestaurant(user1,restaurant1);
+			userService.associateUserToRestaurant(user2,restaurant2);
+
 
 			Product product11 = new Product("Patates", BigDecimal.valueOf(5), ProductCategory.APPETIZER,true,null,restaurant1);
 			Product product12 = new Product("Kotopoulo", BigDecimal.valueOf(15), ProductCategory.APPETIZER,true,null,restaurant1);

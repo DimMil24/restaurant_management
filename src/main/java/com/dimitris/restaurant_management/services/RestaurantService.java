@@ -2,7 +2,6 @@ package com.dimitris.restaurant_management.services;
 
 import com.dimitris.restaurant_management.entities.Product;
 import com.dimitris.restaurant_management.entities.Restaurant;
-import com.dimitris.restaurant_management.entities.User;
 import com.dimitris.restaurant_management.repositories.ProductRepository;
 import com.dimitris.restaurant_management.repositories.RestaurantRepository;
 import org.springframework.stereotype.Service;
@@ -34,8 +33,8 @@ public class RestaurantService {
     }
 
     @Transactional
-    public Restaurant addRestaurant(String name, String description, User user  ) {
-        Restaurant restaurant = new Restaurant(name,true, description, user);
+    public Restaurant addRestaurant(String name, String description) {
+        Restaurant restaurant = new Restaurant(name,true, description, null);
         return restaurantRepository.save(restaurant);
     }
 }

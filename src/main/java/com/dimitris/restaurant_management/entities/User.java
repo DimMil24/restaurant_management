@@ -4,33 +4,34 @@ import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class User implements UserDetails, CredentialsContainer {
 
     @Id @GeneratedValue
     private Long id;
     private String username;
     private String password;
-    @Enumerated(EnumType.STRING)
-    private UserRoles userRoles;
 
     @OneToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-
+    @ManyToMany(mappedBy = "userList", fetch = FetchType.EAGER)
+    private List<Role> roleList;
 
     public User() {}
 
-    public User(String username, String password, UserRoles userRoles,Restaurant restaurant) {
+    public User(String username, String password, Restaurant restaurant, List<Role> roleList) {
         this.username = username;
         this.password = password;
-        this.userRoles = userRoles;
         this.restaurant = restaurant;
+        this.roleList = roleList;
     }
 
     public Long getId() {
@@ -52,8 +53,11 @@ public class User implements UserDetails, CredentialsContainer {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(userRoles.name());
-        return Collections.singletonList(simpleGrantedAuthority);
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (Role role : roleList) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
+        return authorities;
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.dimitris.restaurant_management.services;
 
 import com.dimitris.restaurant_management.entities.Restaurant;
 import com.dimitris.restaurant_management.entities.User;
-import com.dimitris.restaurant_management.entities.UserRoles;
 import com.dimitris.restaurant_management.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +16,8 @@ public class UserService {
     }
 
     @Transactional
-    public User createUser(String username, String password, UserRoles role) {
-        User user = new User(username, password, role,null);
+    public User createUser(String username, String password) {
+        User user = new User(username, password, null,null);
         return userRepository.save(user);
     }
 
