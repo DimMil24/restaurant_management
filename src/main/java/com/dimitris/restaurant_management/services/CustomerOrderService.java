@@ -6,6 +6,7 @@ import com.dimitris.restaurant_management.repositories.ProductRepository;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class CustomerOrderService {
         );
     }
 
-
+    @Transactional
     public void AddOrder(List<Long> products, List<Long> quantity, Restaurant restaurant) {
         CustomerOrder order = new CustomerOrder();
         order.setRestaurant(restaurant);
@@ -50,12 +51,14 @@ public class CustomerOrderService {
         customerOrderRepository.save(order);
     }
 
+    @Transactional
     public void DeleteOrder(Long id) {
         CustomerOrder order = customerOrderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order Not Found"));
         customerOrderRepository.delete(order);
     }
 
+    @Transactional
     public void CompleteOrder(Long id) {
         CustomerOrder order = customerOrderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order Not Found"));

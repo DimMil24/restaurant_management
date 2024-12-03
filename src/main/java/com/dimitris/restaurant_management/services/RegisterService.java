@@ -4,40 +4,33 @@ import com.dimitris.restaurant_management.entities.Restaurant;
 import com.dimitris.restaurant_management.entities.User;
 import com.dimitris.restaurant_management.entities.UserRoles;
 import com.dimitris.restaurant_management.entities.requests.RegisterOwnerRequest;
-import com.dimitris.restaurant_management.repositories.RestaurantRepository;
-import com.dimitris.restaurant_management.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RegisterService {
-    private final UserRepository userRepository;
-    private final RestaurantRepository restaurantRepository;
+    private final RestaurantService restaurantService;
     private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
 
-    public RegisterService(UserRepository userRepository, RestaurantRepository restaurantRepository,PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.restaurantRepository = restaurantRepository;
+    public RegisterService(RestaurantService restaurantService, PasswordEncoder passwordEncoder,
+                           UserService userService) {
+        this.restaurantService = restaurantService;
         this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
     }
 
     @Transactional
     public void registerRestaurantOwner(RegisterOwnerRequest registerOwnerRequest) {
-        User user = new User(registerOwnerRequest.getUsername(),
-                            passwordEncoder.encode(registerOwnerRequest.getPassword()),
-                            UserRoles.ROLE_OWNER,
-                            null);
-        userRepository.save(user);
+        User user = userService.createUser(registerOwnerRequest.username(),
+                        passwordEncoder.encode(registerOwnerRequest.password()),
+                        UserRoles.ROLE_OWNER);
 
-        Restaurant restaurant = new Restaurant(registerOwnerRequest.getRestaurantName(),
-                                                true,
-                                                registerOwnerRequest.getRestaurantDesc(),
-                                                user);
-
-        restaurantRepository.save(restaurant);
-        user.setRestaurant(restaurant);
-        userRepository.save(user);
+        Restaurant restaurant = restaurantService.addRestaurant(registerOwnerRequest.restaurantName(),
+                                                                registerOwnerRequest.restaurantDesc(),
+                                                                user);
+        userService.associateUserToRestaurant(user, restaurant);
     }
 }
