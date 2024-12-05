@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -23,16 +22,20 @@ public class CustomerOrder {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @JsonIgnore
     @OneToMany(mappedBy = "customerOrder", cascade = CascadeType.ALL)
     private List<OrderProduct> product;
-
 
     public CustomerOrder() {
     }
 
 
-    public CustomerOrder(Long id, LocalDateTime date, Boolean isOpen, List<OrderProduct> product,Restaurant restaurant) {
+    public CustomerOrder(Long id, LocalDateTime date, Boolean isOpen, List<OrderProduct> product,Restaurant restaurant,User user) {
         this.Id = id;
         this.date = date;
         this.isOpen = isOpen;
@@ -80,4 +83,13 @@ public class CustomerOrder {
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
 }

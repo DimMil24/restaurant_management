@@ -45,4 +45,10 @@ public class ProductService {
     public void deleteProduct(Product product) {
         productRepository.delete(product);
     }
+
+    public Product findPublicProduct(UUID restaurant_id, Long productId) {
+        return  productRepository.findByRestaurant_IdAndId(restaurant_id, productId).orElseThrow(
+                () -> new RuntimeException("Product not found")
+        );
+    }
 }

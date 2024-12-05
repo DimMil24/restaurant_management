@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.module.FindException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +24,12 @@ public class CustomerOrderService {
         this.productRepository = productRepository;
     }
 
-    @PostFilter("filterObject.restaurant.user.username == authentication.name")
+    @PostFilter("filterObject.user.username == authentication.name")
     public List<CustomerOrder> getAllOrders() {
         return customerOrderRepository.findAll();
     }
 
-    @PostAuthorize("returnObject.restaurant.user.username == authentication.name")
+    @PostAuthorize("returnObject.user.username == authentication.name")
     public CustomerOrder findOrder(Long id) {
         return customerOrderRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Customer Order Not Found")
@@ -36,10 +37,11 @@ public class CustomerOrderService {
     }
 
     @Transactional
-    public void AddOrder(List<Long> products, List<Long> quantity, Restaurant restaurant) {
+    public void AddOrder(List<Long> products, List<Long> quantity, Restaurant restaurant, User user) {
         CustomerOrder order = new CustomerOrder();
         order.setRestaurant(restaurant);
         order.setDate(LocalDateTime.now());
+        order.setUser(user);
         List<OrderProduct> p = new ArrayList<>();
         for (int i = 0; i < products.size(); i++) {
             Product prod = productRepository.findById(products.get(i))
@@ -54,7 +56,7 @@ public class CustomerOrderService {
     @Transactional
     public void DeleteOrder(Long id) {
         CustomerOrder order = customerOrderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Order Not Found"));
+                .orElseThrow(() -> new FindException("Order Not Found"));
         customerOrderRepository.delete(order);
     }
 

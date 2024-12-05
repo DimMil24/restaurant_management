@@ -43,13 +43,13 @@ public class CustomerOrderController {
     @PostMapping("/newOrder")
     public String newOrder(@RequestParam List<Long> products,
                            @RequestParam List<Long> quantity,
-                           @AuthenticationPrincipal User user) throws Exception {
-        customerOrderService.AddOrder(products,quantity,user.getRestaurant());
+                           @AuthenticationPrincipal User user) {
+        customerOrderService.AddOrder(products,quantity,user.getRestaurant(),user);
         return "redirect:/order";
     }
 
     @PostMapping("/complete/{id}")
-    public String completeOrder(@PathVariable Long id) throws Exception {
+    public String completeOrder(@PathVariable Long id) {
         customerOrderService.CompleteOrder(id);
         return "redirect:/order";
     }
