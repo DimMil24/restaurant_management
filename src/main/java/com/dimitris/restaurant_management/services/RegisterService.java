@@ -3,6 +3,7 @@ package com.dimitris.restaurant_management.services;
 import com.dimitris.restaurant_management.entities.Restaurant;
 import com.dimitris.restaurant_management.entities.User;
 import com.dimitris.restaurant_management.entities.requests.RegisterOwnerRequest;
+import com.dimitris.restaurant_management.entities.requests.RegisterUserRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,5 +36,13 @@ public class RegisterService {
         Restaurant restaurant = restaurantService.addRestaurant(registerOwnerRequest.restaurantName(),
                                                                 registerOwnerRequest.restaurantDesc());
         userService.associateUserToRestaurant(user, restaurant);
+    }
+
+    @Transactional
+    public void registerUser(RegisterUserRequest registerUserRequest) {
+        User user = userService.createUser(registerUserRequest.username(),
+                passwordEncoder.encode(registerUserRequest.password()));
+
+        roleService.addRolesToUser(List.of("ROLE_USER"), user);
     }
 }

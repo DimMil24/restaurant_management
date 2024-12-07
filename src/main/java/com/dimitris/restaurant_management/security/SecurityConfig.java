@@ -23,6 +23,7 @@ public class SecurityConfig {
                         .requestMatchers("/product").hasAnyRole("OWNER","ADMIN")
                         .requestMatchers("/table").hasAnyRole("OWNER","ADMIN")
                         .requestMatchers("/order").hasAnyRole("OWNER","ADMIN")
+                        .requestMatchers("/restaurant/newOrder").hasAnyRole("OWNER","ADMIN","USER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(Customizer.withDefaults())
