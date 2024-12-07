@@ -2,6 +2,7 @@ package com.dimitris.restaurant_management.controller;
 
 import com.dimitris.restaurant_management.entities.ProductCategory;
 import com.dimitris.restaurant_management.entities.User;
+import com.dimitris.restaurant_management.entities.requests.ProductRequest;
 import com.dimitris.restaurant_management.services.ProductService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -39,12 +40,9 @@ public class ProductController {
     }
 
     @PostMapping("/newProduct")
-    public String addProduct(@RequestParam String name,
-                             @RequestParam Double price,
-                             @RequestParam ProductCategory category,
-                             @RequestParam String description,
+    public String addProduct(ProductRequest productRequest,
                              @AuthenticationPrincipal User user) {
-        productService.addProduct(productService.generateProduct(name,price,category,description,user.getRestaurant()));
+        productService.addProduct(productService.generateProduct(productRequest,user.getRestaurant()));
         return "redirect:/product";
     }
 

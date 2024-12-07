@@ -7,7 +7,7 @@
 <body>
 <section>
     <div class="container-md">
-        <div class="row mt-2">
+        <div class="row mt-2 gx-5">
             <div class="col-3 mt-4">
 
             </div>
@@ -21,18 +21,24 @@
                                 <div th:text="${p.price} + ' €' "></div>
                             </div>
                             <div>
-                                <i data-feather="plus"></i>
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-id="${p.id}" data-bs-target="#OrderModal">
+                                <button type="button" class="btn" data-bs-toggle="modal" th:data-id="${p.id}" data-bs-target="#OrderModal">
+                                    <i data-feather="plus"></i>
                                 </button>
                             </div>
                         </li>
                     </ul>
                 </th:block>
             </div>
-            <div class="col-3 mt-4">
-                <div class="d-flex justify-content-center">
-                    <ul class="list-group list-group-flush" id="cartList">
-                    </ul>
+
+            <div class="col-md-3 mt-4">
+                <div class="row">
+                    <ul class="list-group list-group-flush mb-auto" id="cartList"></ul>
+                </div>
+                <div id="TotalPrice" class="row col offset-md-6 mt-5" hidden></div>
+                <div class="row mt-2">
+                    <button id="MakeOrder" class="btn btn-primary" type="submit" hidden>
+                        Order
+                    </button>
                 </div>
             </div>
         </div>
@@ -50,12 +56,10 @@
                             <div class="d-flex flex-column justify-content-center">
                                 <h3 id="ProductPrice"></h3>
                                 <h5 id="ProductDesc"></h5>
-
                                 <h4 id="ProductCategory"></h4>
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="modal-footer justify-content-evenly">
                     <div class="d-flex justify-content-center align-items-start">
@@ -72,7 +76,14 @@
     </div>
 
     <script>
+
+        let cart = []
         const myModalEl = document.getElementById('OrderModal');
+        const addtoCartButton = document.getElementById("AddToCart")
+        const minusButton = document.getElementById('minus');
+        const plusButton = document.getElementById('plus');
+        const numberDisplay = document.getElementById('number');
+
         myModalEl.addEventListener('show.bs.modal', event => {
             const button = event.relatedTarget
             const productId = button.dataset.id
@@ -87,24 +98,33 @@
             document.getElementById("ProductTitle").textContent = data.name
             document.getElementById("ProductDesc").textContent = data.description
             document.getElementById("ProductPrice").textContent = data.price + " €"
+            document.getElementById("ProductPrice").setAttribute("data-price", data.price)
             document.getElementById("ProductCategory").textContent = data.category
         }
 
-        const addtoCartButton = document.getElementById("AddToCart")
         addtoCartButton.addEventListener('click', () => {
-
+            const product_id = document.getElementById("AddToCart").getAttribute("data-product")
+            if (cart.find(x => x.id === product_id)) return true
+            cart = [...cart,{
+                id: document.getElementById("AddToCart").getAttribute("data-product"),
+                quantity: count,
+                price: document.getElementById("ProductPrice").dataset.price,
+            }]
             const li = document.createElement('li')
             li.className = 'list-group-item'
-            li.innerText = document.getElementById("ProductTitle").textContent + ' ' + document.getElementById("ProductPrice").textContent
-            const product_id = document.getElementById("AddToCart").getAttribute("data-product")
+            li.innerText = document.getElementById("ProductTitle").textContent + ' ' +
+                document.getElementById("ProductPrice").textContent + '  x' + count
             li.setAttribute("value", product_id)
             const cartContainer = document.getElementById("cartList")
             cartContainer.appendChild(li)
+            document.getElementById("TotalPrice").removeAttribute("hidden")
+            document.getElementById("MakeOrder").removeAttribute("hidden")
+            document.getElementById("TotalPrice").textContent = "Total Price: " +  getCartPrice() + ' €'
+            const modal = bootstrap.Modal.getInstance(myModalEl)
+            modal.hide();
+            count = 1
+            updateCounter()
         })
-
-        const minusButton = document.getElementById('minus');
-        const plusButton = document.getElementById('plus');
-        const numberDisplay = document.getElementById('number');
 
         let count = 1;
 
@@ -124,6 +144,14 @@
             count++;
             updateCounter();
         });
+
+        function getCartPrice() {
+            let price = 0
+            for (let i = 0; i < cart.length; i++) {
+                price = price + cart[i].price * cart[i].quantity
+            }
+            return price
+        }
 
         // Initial state
         updateCounter();

@@ -3,6 +3,7 @@ package com.dimitris.restaurant_management.services;
 import com.dimitris.restaurant_management.entities.Product;
 import com.dimitris.restaurant_management.entities.ProductCategory;
 import com.dimitris.restaurant_management.entities.Restaurant;
+import com.dimitris.restaurant_management.entities.requests.ProductRequest;
 import com.dimitris.restaurant_management.repositories.ProductRepository;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
@@ -34,8 +35,9 @@ public class ProductService {
     }
 
     @PostAuthorize("returnObject.restaurant.user.username == authentication.name")
-    public Product generateProduct(String name, Double price, ProductCategory productCategory, String description, Restaurant restaurant) {
-        return new Product(name, BigDecimal.valueOf(price),productCategory,true,description,restaurant);
+    public Product generateProduct(ProductRequest productRequest, Restaurant restaurant) {
+        return new Product(productRequest.name(), BigDecimal.valueOf(productRequest.price()),
+                productRequest.category(),true, productRequest.description(), restaurant);
     }
 
     public void addProduct(Product product) {
