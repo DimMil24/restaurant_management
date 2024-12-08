@@ -127,6 +127,7 @@
             cart = [...cart,{
                 id: document.getElementById("AddToCart").getAttribute("data-product"),
                 quantity: count,
+                price: document.getElementById("ProductPrice").dataset.price,
             }]
             const li = document.createElement('li')
             li.className = 'list-group-item'
