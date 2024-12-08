@@ -23,14 +23,14 @@ public class CustomerOrderController {
     }
 
     @GetMapping
-    public String index(Model model) {
-        model.addAttribute("orderList", customerOrderService.getAllOrders());
+    public String index(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("orderList", customerOrderService.getAllOrders(user.getRestaurant().getId()));
         return "order/index";
     }
 
     @GetMapping("/orderForm")
-    public String addOrder(Model model) {
-        model.addAttribute("products", productService.getAllProducts());
+    public String addOrder(@AuthenticationPrincipal User user ,Model model) {
+        model.addAttribute("products", productService.getAllProducts(user.getRestaurant().getId()));
         return "order/form";
     }
 

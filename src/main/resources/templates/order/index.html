@@ -24,6 +24,7 @@
         <th scope="col">ID</th>
         <th scope="col">Date</th>
         <th scope="col">Open</th>
+        <th scope="col">User</th>
         <th scope="col">Product</th>
         <th scope="col">Delete</th>
         <th scope="col"></th>
@@ -35,6 +36,7 @@
         <td class="align-middle" th:text="${o.id}"></td>
         <td class="align-middle" th:text="${o.date}"></td>
         <td class="align-middle" th:text="${o.open}"></td>
+        <td class="align-middle" th:text="${o.user.username}"></td>
         <td class="align-middle">
           <a th:href="@{'/order/details/' + ${o.id}}">
             Details

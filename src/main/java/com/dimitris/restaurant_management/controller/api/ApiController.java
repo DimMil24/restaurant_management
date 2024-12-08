@@ -1,13 +1,15 @@
 package com.dimitris.restaurant_management.controller.api;
 
 import com.dimitris.restaurant_management.entities.Product;
+import com.dimitris.restaurant_management.entities.User;
+import com.dimitris.restaurant_management.entities.requests.NewOrderRequest;
 import com.dimitris.restaurant_management.entities.responses.ProductResponse;
+import com.dimitris.restaurant_management.services.CustomerOrderService;
 import com.dimitris.restaurant_management.services.ProductService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -16,9 +18,11 @@ import java.util.UUID;
 public class ApiController {
 
     private final ProductService productService;
+    private final CustomerOrderService customerOrderService;
 
-    public ApiController(ProductService productService) {
+    public ApiController(ProductService productService, CustomerOrderService customerOrderService) {
         this.productService = productService;
+        this.customerOrderService = customerOrderService;
     }
 
     @GetMapping("/product/{restaurant_id}/{product_id}")
@@ -27,5 +31,11 @@ public class ApiController {
         ProductResponse productResponse = new ProductResponse(product.getName(),product.getPrice(),
                 product.getCategory().name(),product.getDescription());
         return ResponseEntity.ok(productResponse);
+    }
+
+    @PostMapping("/newOrder")
+    public ResponseEntity<String> newOrder(@RequestBody NewOrderRequest newOrderRequest, @AuthenticationPrincipal User user) {
+        customerOrderService.AddUserOrder(newOrderRequest,user);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

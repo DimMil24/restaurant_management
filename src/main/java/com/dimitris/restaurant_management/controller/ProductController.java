@@ -24,12 +24,12 @@ public class ProductController {
     }
 
     @GetMapping
-    public String index(Model model) {
+    public String index(@AuthenticationPrincipal User user, Model model) {
         List<String> categories = Stream.of(ProductCategory.values())
                 .map(Enum::name)
                 .toList();
         model.addAttribute("categories",categories);
-        model.addAttribute("productList", productService.getAllProducts());
+        model.addAttribute("productList", productService.getAllProducts(user.getRestaurant().getId()));
         return "product/index";
     }
 

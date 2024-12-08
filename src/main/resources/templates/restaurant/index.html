@@ -36,7 +36,7 @@
                 </div>
                 <div id="TotalPrice" class="row col offset-md-6 mt-5" hidden></div>
                 <div class="row mt-2">
-                    <button id="MakeOrder" class="btn btn-primary" type="submit" hidden>
+                    <button id="MakeOrder" class="btn btn-primary" type="button" hidden>
                         Order
                     </button>
                 </div>
@@ -77,17 +77,20 @@
 
     <script>
 
-        let cart = []
         const myModalEl = document.getElementById('OrderModal');
         const addtoCartButton = document.getElementById("AddToCart")
+        const makeOrder = document.getElementById("MakeOrder")
         const minusButton = document.getElementById('minus');
         const plusButton = document.getElementById('plus');
         const numberDisplay = document.getElementById('number');
+        const restaurantId = document.getElementById("OrderModal").dataset.restaurant
+
+        let cart = []
 
         myModalEl.addEventListener('show.bs.modal', event => {
             const button = event.relatedTarget
             const productId = button.dataset.id
-            const restaurantId = document.getElementById("OrderModal").dataset.restaurant
+
             document.getElementById("AddToCart").setAttribute("data-product", productId)
             getProductDetails(restaurantId,productId)
         })
@@ -102,13 +105,28 @@
             document.getElementById("ProductCategory").textContent = data.category
         }
 
+        makeOrder.addEventListener('click', () => {
+            fetch("http://localhost:8080/api/v1/newOrder", {
+                // Adding method type
+                method: "POST",
+                // Adding body or contents to send
+                body: JSON.stringify({
+                    restaurantId: restaurantId,
+                    itemQuantity: cart,
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+                // Adding headers to the request
+            })
+        })
+
         addtoCartButton.addEventListener('click', () => {
             const product_id = document.getElementById("AddToCart").getAttribute("data-product")
             if (cart.find(x => x.id === product_id)) return true
             cart = [...cart,{
                 id: document.getElementById("AddToCart").getAttribute("data-product"),
                 quantity: count,
-                price: document.getElementById("ProductPrice").dataset.price,
             }]
             const li = document.createElement('li')
             li.className = 'list-group-item'
@@ -121,6 +139,7 @@
             document.getElementById("MakeOrder").removeAttribute("hidden")
             document.getElementById("TotalPrice").textContent = "Total Price: " +  getCartPrice() + ' €'
             const modal = bootstrap.Modal.getInstance(myModalEl)
+            console.log(cart)
             modal.hide();
             count = 1
             updateCounter()

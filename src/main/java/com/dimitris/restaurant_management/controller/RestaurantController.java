@@ -1,13 +1,17 @@
 package com.dimitris.restaurant_management.controller;
 
+import com.dimitris.restaurant_management.entities.User;
+import com.dimitris.restaurant_management.entities.requests.NewOrderRequest;
+import com.dimitris.restaurant_management.services.CustomerOrderService;
 import com.dimitris.restaurant_management.services.RestaurantService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -25,6 +29,4 @@ public class RestaurantController {
         model.addAttribute("products",restaurantService.getProductsByRestaurant(restaurantId));
         return "restaurant/index";
     }
-
-
 }

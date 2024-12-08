@@ -23,8 +23,8 @@ public class ProductService {
     }
 
     @PostFilter("filterObject.restaurant.user.username == authentication.name")
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<Product> getAllProducts(UUID restaurantId) {
+        return productRepository.findByRestaurantId(restaurantId);
     }
 
     @PostAuthorize("returnObject.restaurant.user.username == authentication.name")
