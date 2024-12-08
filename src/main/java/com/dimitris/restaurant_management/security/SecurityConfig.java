@@ -29,7 +29,9 @@ public class SecurityConfig {
                         .requestMatchers("/order").hasAnyRole("OWNER","ADMIN")
                         .anyRequest().authenticated()
                 )
-                .formLogin(Customizer.withDefaults())
+                .formLogin(form -> {
+                    form.loginPage("/login").permitAll();
+                })
                 .build();
     }
 

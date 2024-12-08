@@ -21,8 +21,8 @@
                                 <div th:text="${p.price} + ' €' "></div>
                             </div>
                             <div>
-                                <button type="button" class="btn" data-bs-toggle="modal" th:data-id="${p.id}" data-bs-target="#OrderModal">
-                                    <i data-feather="plus"></i>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-id="${p.id}" data-bs-target="#OrderModal">
+                                Add
                                 </button>
                             </div>
                         </li>
@@ -31,7 +31,10 @@
             </div>
 
             <div class="col-md-3 mt-4">
-                <div class="row">
+                <div class="row card">
+                    <div class="card-header">
+                        Your Order
+                    </div>
                     <ul class="list-group list-group-flush mb-auto" id="cartList"></ul>
                 </div>
                 <div id="TotalPrice" class="row col offset-md-6 mt-5" hidden></div>
@@ -76,7 +79,6 @@
     </div>
 
     <script>
-
         const myModalEl = document.getElementById('OrderModal');
         const addtoCartButton = document.getElementById("AddToCart")
         const makeOrder = document.getElementById("MakeOrder")
@@ -84,6 +86,7 @@
         const plusButton = document.getElementById('plus');
         const numberDisplay = document.getElementById('number');
         const restaurantId = document.getElementById("OrderModal").dataset.restaurant
+
 
         let cart = []
 
@@ -122,8 +125,19 @@
         })
 
         addtoCartButton.addEventListener('click', () => {
-            const product_id = document.getElementById("AddToCart").getAttribute("data-product")
-            if (cart.find(x => x.id === product_id)) return true
+            let product_id = document.getElementById("AddToCart").getAttribute("data-product")
+            if (cart.find(x => x.id === product_id)) {
+                console.log(cart)
+                let t = cart.find(x => x.id === product_id)
+                t.quantity = parseInt(t.quantity) + parseInt(count)
+                const updateListItem = document.getElementById(`product_${product_id}`)
+                updateListItem.innerHTML = document.getElementById("ProductTitle").textContent + ' ' +
+                    document.getElementById("ProductPrice").textContent + '  x' + t.quantity
+                const modal = bootstrap.Modal.getInstance(myModalEl)
+                modal.hide();
+                document.getElementById("TotalPrice").textContent = "Total Price: " +  getCartPrice() + ' €'
+                return true
+            }
             cart = [...cart,{
                 id: document.getElementById("AddToCart").getAttribute("data-product"),
                 quantity: count,
@@ -133,7 +147,7 @@
             li.className = 'list-group-item'
             li.innerText = document.getElementById("ProductTitle").textContent + ' ' +
                 document.getElementById("ProductPrice").textContent + '  x' + count
-            li.setAttribute("value", product_id)
+            li.setAttribute("id", `product_${product_id}`)
             const cartContainer = document.getElementById("cartList")
             cartContainer.appendChild(li)
             document.getElementById("TotalPrice").removeAttribute("hidden")
