@@ -37,4 +37,8 @@ public class RestaurantService {
         Restaurant restaurant = new Restaurant(name,true, description, null);
         return restaurantRepository.save(restaurant);
     }
+
+    public boolean findRestaurantByName(String name) {
+        return restaurantRepository.findByName(name).isPresent();
+    }
 }

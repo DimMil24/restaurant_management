@@ -11,6 +11,8 @@
       <div class="col-md-8">
         <h2>Register</h2>
         <h4>Please fill out the form below</h4>
+        <div class="link-danger" th:if="${param.userDuplicate}">
+          User already exists with that Username.</div>
         <form th:action="@{/register/createUser}" method="post">
           <div class="form-floating mb-3">
             <input class="form-control" id="username" type="text" name="username" placeholder="" required/>

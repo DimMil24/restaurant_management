@@ -27,22 +27,30 @@ public class RegisterService {
     }
 
     @Transactional
-    public void registerRestaurantOwner(RegisterOwnerRequest registerOwnerRequest) {
+    public int registerRestaurantOwner(RegisterOwnerRequest registerOwnerRequest) {
+        if(userService.checkUserExists(registerOwnerRequest.username())) {
+            return 1;
+        }
+        if (restaurantService.findRestaurantByName(registerOwnerRequest.restaurantName())) {
+            return 2;
+        }
         User user = userService.createUser(registerOwnerRequest.username(),
-                        passwordEncoder.encode(registerOwnerRequest.password()));
-
-        roleService.addRolesToUser(List.of("ROLE_ADMIN","ROLE_OWNER"), user);
-
+                passwordEncoder.encode(registerOwnerRequest.password()));
+        roleService.addRolesToUser(List.of("ROLE_ADMIN", "ROLE_OWNER"), user);
         Restaurant restaurant = restaurantService.addRestaurant(registerOwnerRequest.restaurantName(),
-                                                                registerOwnerRequest.restaurantDesc());
+                registerOwnerRequest.restaurantDesc());
         userService.associateUserToRestaurant(user, restaurant);
+        return 0;
     }
 
     @Transactional
-    public void registerUser(RegisterUserRequest registerUserRequest) {
-        User user = userService.createUser(registerUserRequest.username(),
-                passwordEncoder.encode(registerUserRequest.password()));
-
-        roleService.addRolesToUser(List.of("ROLE_USER"), user);
+    public boolean registerUser(RegisterUserRequest registerUserRequest) {
+        if (!userService.checkUserExists(registerUserRequest.username())) {
+            User user = userService.createUser(registerUserRequest.username(),
+                    passwordEncoder.encode(registerUserRequest.password()));
+            roleService.addRolesToUser(List.of("ROLE_USER"), user);
+            return true;
+        }
+        return false;
     }
 }

@@ -26,4 +26,8 @@ public class UserService {
         user.setRestaurant(restaurant);
         userRepository.save(user);
     }
+
+    public boolean checkUserExists(String username) {
+        return userRepository.findByUsername(username).isPresent();
+    }
 }

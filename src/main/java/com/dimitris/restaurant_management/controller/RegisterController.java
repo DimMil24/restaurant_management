@@ -29,14 +29,23 @@ public class RegisterController {
 
     @PostMapping("/createOwner")
     public String newRestaurantUser (RegisterOwnerRequest registerOwnerRequest) {
-        registerService.registerRestaurantOwner(registerOwnerRequest);
-        return "redirect:/";
+        int registerResult = registerService.registerRestaurantOwner(registerOwnerRequest);
+        if (registerResult==1) {
+            return "redirect:owner?userDuplicate=true";
+        } else if (registerResult==2) {
+            return "redirect:owner?restaurantDuplicate=true";
+        } else {
+            return "redirect:/";
+        }
     }
 
     @PostMapping("/createUser")
     public String newUser (RegisterUserRequest registerUserRequest) {
-        registerService.registerUser(registerUserRequest);
-        return "redirect:/";
+        boolean userNotExists = registerService.registerUser(registerUserRequest);
+        if (userNotExists) {
+            return "redirect:/";
+        }
+        return "redirect:user?userDuplicate=true";
     }
 
 }
