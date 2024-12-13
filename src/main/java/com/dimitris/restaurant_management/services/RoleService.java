@@ -16,6 +16,10 @@ public class RoleService {
         this.roleRepository = roleRepository;
     }
 
+    public boolean roleExists(String roleName) {
+        return roleRepository.findByName(roleName).isPresent();
+    }
+
     @Transactional
     public void createRole(String role) {
         roleRepository.save(new Role(null,role));

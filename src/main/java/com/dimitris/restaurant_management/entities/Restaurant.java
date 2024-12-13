@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -16,10 +17,12 @@ public class Restaurant implements Serializable {
     private String description;
 
     @JsonIgnore
+    @OneToMany(mappedBy = "restaurant")
+    private List<Category> categories;
+
+    @JsonIgnore
     @OneToOne(mappedBy = "restaurant")
     private User user;
-
-
 
     public Restaurant() {
     }
@@ -69,5 +72,13 @@ public class Restaurant implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 }

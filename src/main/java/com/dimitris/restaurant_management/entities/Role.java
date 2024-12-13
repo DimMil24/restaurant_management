@@ -3,6 +3,7 @@ package com.dimitris.restaurant_management.entities;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,6 +25,7 @@ public class Role implements Serializable {
     public Role(Long id, String name) {
         this.id = id;
         this.name = name;
+        userList = new ArrayList<>();
     }
 
     public void setId(Long id) {

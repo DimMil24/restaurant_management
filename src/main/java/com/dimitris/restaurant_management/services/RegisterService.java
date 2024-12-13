@@ -28,6 +28,12 @@ public class RegisterService {
 
     @Transactional
     public int registerRestaurantOwner(RegisterOwnerRequest registerOwnerRequest) {
+        if (!roleService.roleExists("ROLE_ADMIN")) {
+            roleService.createRole("ROLE_ADMIN");
+        }
+        if (!roleService.roleExists("ROLE_OWNER")) {
+            roleService.createRole("ROLE_OWNER");
+        }
         if(userService.checkUserExists(registerOwnerRequest.username())) {
             return 1;
         }
@@ -45,6 +51,9 @@ public class RegisterService {
 
     @Transactional
     public boolean registerUser(RegisterUserRequest registerUserRequest) {
+        if (!roleService.roleExists("ROLE_USER")) {
+            roleService.createRole("ROLE_USER");
+        }
         if (!userService.checkUserExists(registerUserRequest.username())) {
             User user = userService.createUser(registerUserRequest.username(),
                     passwordEncoder.encode(registerUserRequest.password()));

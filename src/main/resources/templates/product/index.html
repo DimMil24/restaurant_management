@@ -33,7 +33,7 @@
         <td class="align-middle" th:text="${p.id}"></td>
         <td class="align-middle" th:text="${p.name}"></td>
         <td class="align-middle" th:text="${p.price}"></td>
-        <td class="align-middle" th:text="${p.category}"></td>
+        <td class="align-middle" th:text="${p.category.name}"></td>
         <td class="align-middle" th:text="${p.available}"></td>
         <td class="align-middle">
           <a th:href="@{/product/details/{restaurant_id}/{id}(id=${p.id} ,restaurant_id=${p.restaurant.id})}">
@@ -62,29 +62,40 @@
           <form method="POST" th:action="@{/product/newProduct}">
             <div class="modal-body">
                 <div class="row align-items-center">
-                  <div class="col-4">
+                  <div class="col-8">
                     <div class="form-floating mb-3">
                       <input type="text" required class="form-control" id="name" name="name" placeholder="name">
                       <label for="name" class="form-label">Name</label>
                     </div>
                   </div>
-                  <div class="col-4">
+                  <div class="col-8">
                     <div class="form-floating mb-3">
                       <input type="number" required class="form-control" id="price" name="price" min="0" step=".01" placeholder="price">
                       <label for="price" class="form-label">Price</label>
                     </div>
                   </div>
-                  <div class="col-4">
-                    <label class="visually-hidden" for="category">Category</label>
-                    <select class="form-select" required id="category" name="category">
-                      <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
-                    </select>
-                  </div>
-                  <div class="col-4">
+                  <div class="col-8">
                     <div class="form-floating mb-3">
                       <input type="text" class="form-control" id="description" name="description" placeholder="desc">
                       <label for="description" class="form-label">Description</label>
                     </div>
+                  </div>
+                  <div class="col-8">
+                    <label class="visually-hidden" for="category">Category</label>
+                    <select  class="form-select" required id="category" name="category">
+                      <option disabled>Please select...</option>
+                      <option th:each="category : ${categories}" th:value="${category.name}" th:text="${category.name}"></option>
+                    </select>
+                  </div>
+                  <div class="col-8">
+                    <div class="form-floating mb-3">
+                      <input disabled type="text" class="form-control" id="newCategory" name="category" placeholder="desc">
+                      <label for="newCategory" class="form-label">New Category</label>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <input type="checkbox" name="is_user" id="isNewCategory" onclick="toggleNewCategory()"/>
+                    <label for="isNewCategory" class="form-label">Is New Category</label>
                   </div>
                 </div>
             </div>
@@ -97,6 +108,21 @@
       </div>
     </div>
   </div>
+
+  <script>
+    function toggleNewCategory(){
+      var newCategory = document.getElementById("newCategory");
+      var category = document.getElementById("category");
+      var checkbox = document.getElementById("isNewCategory");
+      if (checkbox.checked){
+        category.disabled = true;
+        newCategory.disabled = false;
+      } else {
+        category.disabled = false;
+        newCategory.disabled = true;
+      }
+    }
+  </script>
 </section>
 
 </body>

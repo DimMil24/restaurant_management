@@ -1,8 +1,9 @@
 package com.dimitris.restaurant_management.controller;
 
-import com.dimitris.restaurant_management.entities.ProductCategory;
+import com.dimitris.restaurant_management.entities.Category;
 import com.dimitris.restaurant_management.entities.User;
 import com.dimitris.restaurant_management.entities.requests.ProductRequest;
+import com.dimitris.restaurant_management.services.CategoryService;
 import com.dimitris.restaurant_management.services.ProductService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -11,23 +12,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 @RequestMapping("/product")
 @Controller
 public class ProductController {
 
     private final ProductService productService;
+    private final CategoryService categoryService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, CategoryService categoryService) {
         this.productService = productService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping
     public String index(@AuthenticationPrincipal User user, Model model) {
-        List<String> categories = Stream.of(ProductCategory.values())
-                .map(Enum::name)
-                .toList();
+        List<Category> categories = categoryService.findAllCategoriesByRestaurant(user.getRestaurant().getId());
         model.addAttribute("categories",categories);
         model.addAttribute("productList", productService.getAllProducts(user.getRestaurant().getId()));
         return "product/index";

@@ -1,13 +1,14 @@
 package com.dimitris.restaurant_management.services;
 
+import com.dimitris.restaurant_management.entities.Category;
 import com.dimitris.restaurant_management.entities.Product;
-import com.dimitris.restaurant_management.entities.ProductCategory;
 import com.dimitris.restaurant_management.entities.Restaurant;
 import com.dimitris.restaurant_management.entities.requests.ProductRequest;
 import com.dimitris.restaurant_management.repositories.ProductRepository;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,9 +18,11 @@ import java.util.UUID;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final CategoryService categoryService;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, CategoryService categoryService) {
         this.productRepository = productRepository;
+        this.categoryService = categoryService;
     }
 
     @PostFilter("filterObject.restaurant.user.username == authentication.name")
@@ -34,10 +37,18 @@ public class ProductService {
         );
     }
 
+    @Transactional
     @PostAuthorize("returnObject.restaurant.user.username == authentication.name")
     public Product generateProduct(ProductRequest productRequest, Restaurant restaurant) {
-        return new Product(productRequest.name(), BigDecimal.valueOf(productRequest.price()),
-                productRequest.category(),true, productRequest.description(), restaurant);
+        var category = categoryService.findCategoryByName(productRequest.category());
+        if (category != null) {
+            return new Product(productRequest.name(), BigDecimal.valueOf(productRequest.price()),
+                    category,true, productRequest.description(), restaurant);
+        } else {
+            Category newCategory = categoryService.createCategory(productRequest.name(),restaurant);
+            return new Product(productRequest.name(), BigDecimal.valueOf(productRequest.price()), newCategory,
+                    true, productRequest.description(), restaurant);
+        }
     }
 
     public void addProduct(Product product) {

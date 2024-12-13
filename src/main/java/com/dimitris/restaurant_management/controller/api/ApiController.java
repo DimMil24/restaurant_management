@@ -29,7 +29,7 @@ public class ApiController {
     ResponseEntity<ProductResponse> getProduct(@PathVariable UUID restaurant_id, @PathVariable Long product_id) {
         Product product = productService.findPublicProduct(restaurant_id, product_id);
         ProductResponse productResponse = new ProductResponse(product.getName(),product.getPrice(),
-                product.getCategory().name(),product.getDescription());
+                product.getCategory().getName(),product.getDescription());
         return ResponseEntity.ok(productResponse);
     }
 

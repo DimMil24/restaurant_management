@@ -1,9 +1,5 @@
 package com.dimitris.restaurant_management.entities;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import org.hibernate.annotations.JdbcType;
-import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
 import java.math.BigDecimal;
 
@@ -19,25 +15,24 @@ public class Product {
     @Column(nullable = false)
     private BigDecimal price;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private ProductCategory category;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @Column(nullable = false)
     private Boolean isAvailable = true;
 
-    @Column(nullable = true)
+    @Column
     private String description;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-
     public Product() {
     }
 
-    public Product(String name, BigDecimal price, ProductCategory category, Boolean isAvailable, String description, Restaurant restaurant) {
+    public Product(String name, BigDecimal price,Category category, Boolean isAvailable, String description, Restaurant restaurant) {
         this.name = name;
         this.price = price;
         this.category = category;
@@ -45,7 +40,6 @@ public class Product {
         this.description = description;
         this.restaurant = restaurant;
     }
-
 
     public Long getId() {
         return Id;
@@ -71,11 +65,11 @@ public class Product {
         this.price = price;
     }
 
-    public ProductCategory getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(ProductCategory category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
