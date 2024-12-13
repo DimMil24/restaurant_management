@@ -16,8 +16,8 @@ public class RoleService {
         this.roleRepository = roleRepository;
     }
 
-    public boolean roleExists(String roleName) {
-        return roleRepository.findByName(roleName).isPresent();
+    public boolean roleMissing(String roleName) {
+        return roleRepository.findByName(roleName).isEmpty();
     }
 
     @Transactional

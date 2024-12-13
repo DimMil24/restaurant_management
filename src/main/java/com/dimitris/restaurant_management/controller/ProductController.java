@@ -33,6 +33,12 @@ public class ProductController {
         return "product/index";
     }
 
+    @GetMapping("/categories")
+    public String categories(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("categories",categoryService.findAllCategoriesByRestaurant(user.getRestaurant().getId()));
+        return "product/categories";
+    }
+
     @GetMapping("/details/{restaurant_id}/{id}")
     public String details(@PathVariable UUID restaurant_id, @PathVariable Long id, Model model) {
         model.addAttribute("product",productService.findProduct(restaurant_id,id));
@@ -43,6 +49,12 @@ public class ProductController {
     public String addProduct(ProductRequest productRequest,
                              @AuthenticationPrincipal User user) {
         productService.addProduct(productService.generateProduct(productRequest,user.getRestaurant()));
+        return "redirect:/product";
+    }
+
+    @PostMapping("/deleteCategory/{category_id}")
+    public String deleteCategory(@PathVariable Long category_id) {
+        categoryService.deleteCategory(categoryService.findCategoryById(category_id));
         return "redirect:/product";
     }
 

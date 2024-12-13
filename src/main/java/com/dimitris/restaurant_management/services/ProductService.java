@@ -45,7 +45,7 @@ public class ProductService {
             return new Product(productRequest.name(), BigDecimal.valueOf(productRequest.price()),
                     category,true, productRequest.description(), restaurant);
         } else {
-            Category newCategory = categoryService.createCategory(productRequest.name(),restaurant);
+            Category newCategory = categoryService.createCategory(productRequest.category(),restaurant);
             return new Product(productRequest.name(), BigDecimal.valueOf(productRequest.price()), newCategory,
                     true, productRequest.description(), restaurant);
         }

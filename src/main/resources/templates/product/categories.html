@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Categories</title>
+</head>
+    <body>
+        <section>
+            <div class="container">
+                <h1>Categories</h1>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="c : ${categories}">
+                            <td class="align-middle" th:text="${c.id}"></td>
+                            <td class="align-middle" th:text="${c.name}"></td>
+                            <td class="align-middle">
+                                <form method="post" th:action="@{/product/deleteCategory/{category_id}(category_id=${c.id})}">
+                                    <button type="submit" class="btn btn-danger" name="submit" value="value">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </body>
+</html>
