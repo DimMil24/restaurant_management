@@ -40,7 +40,8 @@ public class ProductService {
     @Transactional
     @PostAuthorize("returnObject.restaurant.user.username == authentication.name")
     public Product generateProduct(ProductRequest productRequest, Restaurant restaurant) {
-        var category = categoryService.findCategoryByName(productRequest.category());
+        var category = categoryService.findCategoryByNameAndRestaurant(productRequest.category(),
+                                                                        restaurant.getId());
         if (category != null) {
             return new Product(productRequest.name(), BigDecimal.valueOf(productRequest.price()),
                     category,true, productRequest.description(), restaurant);
@@ -57,6 +58,10 @@ public class ProductService {
 
     public void deleteProduct(Product product) {
         productRepository.delete(product);
+    }
+
+    public boolean productExists(String productName,UUID restaurantId) {
+        return productRepository.findByNameAndRestaurant_Id(productName,restaurantId).isPresent();
     }
 
     public Product findPublicProduct(UUID restaurant_id, Long productId) {

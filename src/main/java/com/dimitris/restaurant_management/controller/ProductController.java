@@ -1,7 +1,9 @@
 package com.dimitris.restaurant_management.controller;
 
 import com.dimitris.restaurant_management.entities.Category;
+import com.dimitris.restaurant_management.entities.Product;
 import com.dimitris.restaurant_management.entities.User;
+import com.dimitris.restaurant_management.entities.requests.CategoryRequest;
 import com.dimitris.restaurant_management.entities.requests.ProductRequest;
 import com.dimitris.restaurant_management.services.CategoryService;
 import com.dimitris.restaurant_management.services.ProductService;
@@ -48,19 +50,32 @@ public class ProductController {
     @PostMapping("/newProduct")
     public String addProduct(ProductRequest productRequest,
                              @AuthenticationPrincipal User user) {
-        productService.addProduct(productService.generateProduct(productRequest,user.getRestaurant()));
+        if (productService.productExists(productRequest.name(),user.getRestaurant().getId())) {
+            return "redirect:/product?duplicate=true";
+        }
+        Product product = productService.generateProduct(productRequest,user.getRestaurant());
+        productService.addProduct(product);
         return "redirect:/product";
+    }
+
+    @PostMapping("/newCategory")
+    public String newCategory(CategoryRequest categoryRequest,
+                              @AuthenticationPrincipal User user) {
+        categoryService.createCategory(categoryRequest.name(),user.getRestaurant());
+        return "redirect:/product/categories";
     }
 
     @PostMapping("/deleteCategory/{category_id}")
     public String deleteCategory(@PathVariable Long category_id) {
-        categoryService.deleteCategory(categoryService.findCategoryById(category_id));
-        return "redirect:/product";
+        Category category = categoryService.findCategoryById(category_id);
+        categoryService.deleteCategory(category);
+        return "redirect:/product/categories";
     }
 
     @PostMapping("/deleteProduct/{restaurant_id}/{id}")
     public String deleteProduct(@PathVariable UUID restaurant_id, @PathVariable Long id) {
-        productService.deleteProduct(productService.findProduct(restaurant_id,id));
+        Product product = productService.findProduct(restaurant_id,id);
+        productService.deleteProduct(product);
         return "redirect:/product";
     }
 }

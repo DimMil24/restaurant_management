@@ -31,8 +31,8 @@ public class CategoryService {
         return categoryRepository.findById(id).orElse(null);
     }
 
-    public Category findCategoryByName(String name) {
-        return categoryRepository.findCategoryByName(name).orElse(null);
+    public Category findCategoryByNameAndRestaurant(String name,UUID restaurantId) {
+        return categoryRepository.findCategoryByNameAndRestaurant_Id(name,restaurantId).orElse(null);
     }
 
     @PostFilter("filterObject.restaurant.user.username == authentication.name")

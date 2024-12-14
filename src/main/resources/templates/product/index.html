@@ -19,7 +19,8 @@
     <a class="link" th:href="@{/product/categories}">
       Manage Categories
     </a>
-
+    <div class="link-danger" th:if="${param.duplicate}">
+      Product with that name already exists.</div>
     <table class="table table-hover">
       <thead>
       <tr>
