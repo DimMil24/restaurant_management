@@ -35,7 +35,7 @@ public class ProductController {
 
     @GetMapping("/categories")
     public String categories(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("categories",categoryService.findAllCategoriesByRestaurant(user.getRestaurant().getId()));
+        model.addAttribute("categories",categoryService.findAllCategoriesByCountAndByRestaurant(user.getRestaurant().getId()));
         return "product/categories";
     }
 

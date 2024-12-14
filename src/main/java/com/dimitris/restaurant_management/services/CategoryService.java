@@ -2,6 +2,7 @@ package com.dimitris.restaurant_management.services;
 
 import com.dimitris.restaurant_management.entities.Category;
 import com.dimitris.restaurant_management.entities.Restaurant;
+import com.dimitris.restaurant_management.projections.CategoryDTO;
 import com.dimitris.restaurant_management.repositories.CategoryRepository;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
@@ -37,6 +38,10 @@ public class CategoryService {
     @PostFilter("filterObject.restaurant.user.username == authentication.name")
     public List<Category> findAllCategoriesByRestaurant(UUID restaurantId) {
         return categoryRepository.findAllByRestaurant_Id(restaurantId);
+    }
+
+    public List<CategoryDTO> findAllCategoriesByCountAndByRestaurant(UUID restaurantId) {
+        return categoryRepository.getCategoriesByProductCount(restaurantId);
     }
 
     public void deleteCategory(Category category) {
