@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <title>Restaurant</title>
 </head>
 <body>
-<section>
     <div class="container-md">
         <div class="row mt-2 gx-5">
             <div class="col-3 mt-4">
@@ -190,7 +188,5 @@
         // Initial state
         updateCounter();
     </script>
-
-</section>
 </body>
 </html>

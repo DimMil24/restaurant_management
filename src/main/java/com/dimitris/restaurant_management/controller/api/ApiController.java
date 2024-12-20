@@ -6,6 +6,7 @@ import com.dimitris.restaurant_management.entities.requests.NewOrderRequest;
 import com.dimitris.restaurant_management.entities.responses.ProductResponse;
 import com.dimitris.restaurant_management.services.CustomerOrderService;
 import com.dimitris.restaurant_management.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -34,7 +35,7 @@ public class ApiController {
     }
 
     @PostMapping("/newOrder")
-    public ResponseEntity<String> newOrder(@RequestBody NewOrderRequest newOrderRequest, @AuthenticationPrincipal User user) {
+    public ResponseEntity<String> newOrder(@RequestBody @Valid NewOrderRequest newOrderRequest, @AuthenticationPrincipal User user) {
         customerOrderService.AddUserOrder(newOrderRequest,user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

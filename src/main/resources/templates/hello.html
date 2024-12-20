@@ -1,15 +1,10 @@
 <!DOCTYPE html>
-<html th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}" xmlns:sec="http://www.w3.org/1999/xhtml"
+<html th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}" xmlns:sec="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Home</title>
 </head>
 <body>
-<script>0</script>
-
-<section>
     <div class="container">
         <h1>Hello</h1>
         <div sec:authorize="isAuthenticated()">
@@ -33,8 +28,6 @@
             </th:block>
         </div>
     </div>
-</section>
-
 
 </body>
 </html>

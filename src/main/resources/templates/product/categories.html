@@ -1,69 +1,66 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}">
-<head>
-    <meta charset="UTF-8">
-    <title>Categories</title>
-</head>
+<html lang="en" th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}">
+    <head>
+        <title>Categories</title>
+    </head>
     <body>
-        <section>
-            <div class="container">
-                <h1>Categories</h1>
+        <div class="container">
+            <h1>Categories</h1>
 
-                <a href="#" data-bs-toggle="modal" data-bs-target="#newProductModal">
-                    Create New Category
-                </a>
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Number of Products</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="c : ${categories}">
-                            <td class="align-middle" th:text="${c.id}"></td>
-                            <td class="align-middle" th:text="${c.name}"></td>
-                            <td class="align-middle" th:text="${c.count}"></td>
-                            <td class="align-middle">
-                                <form method="post" th:action="@{/product/deleteCategory/{category_id}(category_id=${c.id})}">
-                                    <button type="submit" class="btn btn-danger" name="submit" value="value">
-                                        Delete
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#newProductModal">
+                Create New Category
+            </a>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Number of Products</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="c : ${categories}">
+                        <td class="align-middle" th:text="${c.id}"></td>
+                        <td class="align-middle" th:text="${c.name}"></td>
+                        <td class="align-middle" th:text="${c.count}"></td>
+                        <td class="align-middle">
+                            <form method="post" th:action="@{/product/deleteCategory/{category_id}(category_id=${c.id})}">
+                                <button type="submit" class="btn btn-danger" name="submit" value="value">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-            <div class="modal fade" id="newProductModal" tabindex="-1" aria-labelledby="newProductModal" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">New Product</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <form method="POST" th:action="@{/product/newCategory}">
-                            <div class="modal-body">
-                                <div class="row align-items-center">
-                                    <div class="col-8">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" required class="form-control" id="name" name="name" placeholder="name">
-                                            <label for="name" class="form-label">Category Name</label>
-                                        </div>
+        <div class="modal fade" id="newProductModal" tabindex="-1" aria-labelledby="newProductModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">New Product</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="POST" th:action="@{/product/newCategory}">
+                        <div class="modal-body">
+                            <div class="row align-items-center">
+                                <div class="col-8">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" required class="form-control" id="name" name="name" placeholder="name">
+                                        <label for="name" class="form-label">Category Name</label>
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Add new Category</button>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Add new Category</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </section>
+        </div>
     </body>
 </html>
