@@ -7,6 +7,7 @@ import com.dimitris.restaurant_management.entities.requests.CategoryRequest;
 import com.dimitris.restaurant_management.entities.requests.ProductRequest;
 import com.dimitris.restaurant_management.services.CategoryService;
 import com.dimitris.restaurant_management.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,7 +49,7 @@ public class ProductController {
     }
 
     @PostMapping("/newProduct")
-    public String addProduct(ProductRequest productRequest,
+    public String addProduct(@Valid ProductRequest productRequest,
                              @AuthenticationPrincipal User user) {
         if (productService.productExists(productRequest.name(),user.getRestaurant().getId())) {
             return "redirect:/product?duplicate=true";

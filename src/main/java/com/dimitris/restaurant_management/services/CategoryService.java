@@ -31,12 +31,19 @@ public class CategoryService {
         return categoryRepository.findById(id).orElse(null);
     }
 
+
+    //@PostAuthorize("returnObject.restaurant.user.username == authentication.name")
     public Category findCategoryByNameAndRestaurant(String name,UUID restaurantId) {
         return categoryRepository.findCategoryByNameAndRestaurant_Id(name,restaurantId).orElse(null);
     }
 
+
     @PostFilter("filterObject.restaurant.user.username == authentication.name")
     public List<Category> findAllCategoriesByRestaurant(UUID restaurantId) {
+        return categoryRepository.findAllByRestaurant_Id(restaurantId);
+    }
+
+    public List<Category> findAllCategoriesByRestaurantPublic(UUID restaurantId) {
         return categoryRepository.findAllByRestaurant_Id(restaurantId);
     }
 

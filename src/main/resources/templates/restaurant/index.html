@@ -10,22 +10,35 @@
 
             </div>
             <div class="col-md-6">
-                <th:block th:each="p : ${products}">
-                    <ul class="list-group mt-4">
-                        <li class="list-group-item d-flex align-items-center justify-content-between">
-                            <div>
-                                <div class="fw-bold" th:text="${p.name}"></div>
-                                <div th:text="${p.description}"></div>
-                                <div th:text="${p.price} + ' €' "></div>
-                            </div>
-                            <div>
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-id="${p.id}" data-bs-target="#OrderModal">
-                                Add
-                                </button>
-                            </div>
-                        </li>
+                <h1 th:text="${restaurant.name}"></h1>
+                    <ul class="list-group list-group-flush mt-4">
+                        <th:block th:each="c : ${categories}">
+                            <li class="list-group-item mt-2 mb-2 border rounded">
+                                <div>
+                                    <h3 class="fw-bolder" th:text="${c.name}"></h3>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <th:block th:each="p : ${c.products}">
+                                            <div class="d-flex align-items-center justify-content-between mt-2 mb-2">
+                                                <div>
+                                                    <div class="fw-bold" th:text="${p.name}"></div>
+                                                    <div th:text="${p.description}"></div>
+                                                    <div th:text="${p.price} + ' €' "></div>
+                                                </div>
+
+                                                <div>
+                                                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" th:data-id="${p.id}" data-bs-target="#OrderModal">
+                                                        Add to Cart
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </th:block>
+                                    </li>
+                                </ul>
+                            </li>
+                        </th:block>
                     </ul>
-                </th:block>
             </div>
 
             <div class="col-md-3 mt-4">
@@ -107,10 +120,9 @@
         }
 
         makeOrder.addEventListener('click', () => {
-            fetch("http://localhost:8080/api/v1/newOrder", {
-                // Adding method type
+            fetch("http://localhost:8080/order/newOrderV1", {
                 method: "POST",
-                // Adding body or contents to send
+                redirect: "follow",
                 body: JSON.stringify({
                     restaurantId: restaurantId,
                     itemQuantity: cart,

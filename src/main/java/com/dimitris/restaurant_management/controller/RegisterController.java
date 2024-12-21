@@ -3,6 +3,7 @@ package com.dimitris.restaurant_management.controller;
 import com.dimitris.restaurant_management.entities.requests.RegisterOwnerRequest;
 import com.dimitris.restaurant_management.entities.requests.RegisterUserRequest;
 import com.dimitris.restaurant_management.services.RegisterService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +29,7 @@ public class RegisterController {
     }
 
     @PostMapping("/createOwner")
-    public String newRestaurantUser (RegisterOwnerRequest registerOwnerRequest) {
+    public String newRestaurantUser (@Valid RegisterOwnerRequest registerOwnerRequest) {
         int registerResult = registerService.registerRestaurantOwner(registerOwnerRequest);
         if (registerResult==1) {
             return "redirect:owner?userDuplicate=true";
@@ -40,7 +41,7 @@ public class RegisterController {
     }
 
     @PostMapping("/createUser")
-    public String newUser (RegisterUserRequest registerUserRequest) {
+    public String newUser (@Valid RegisterUserRequest registerUserRequest) {
         boolean userNotExists = registerService.registerUser(registerUserRequest);
         if (userNotExists) {
             return "redirect:/";

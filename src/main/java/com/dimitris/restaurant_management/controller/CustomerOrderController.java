@@ -1,8 +1,10 @@
 package com.dimitris.restaurant_management.controller;
 
 import com.dimitris.restaurant_management.entities.*;
+import com.dimitris.restaurant_management.entities.requests.NewOrderRequest;
 import com.dimitris.restaurant_management.services.CustomerOrderService;
 import com.dimitris.restaurant_management.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,5 +60,11 @@ public class CustomerOrderController {
     public String deleteOrder(@PathVariable Long id) {
         customerOrderService.DeleteOrder(id);
         return "redirect:/order";
+    }
+
+    @PostMapping("/newOrderV1")
+    public String newOrder(@RequestBody @Valid NewOrderRequest newOrderRequest, @AuthenticationPrincipal User user) {
+        customerOrderService.AddUserOrder(newOrderRequest,user);
+        return "redirect:/";
     }
 }

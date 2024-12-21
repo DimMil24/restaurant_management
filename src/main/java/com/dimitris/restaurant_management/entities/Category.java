@@ -2,6 +2,8 @@ package com.dimitris.restaurant_management.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Category {
 
@@ -12,6 +14,9 @@ public class Category {
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
+
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
 
     public Category() {
     }
@@ -44,5 +49,14 @@ public class Category {
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
+    }
+
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }
