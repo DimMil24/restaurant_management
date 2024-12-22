@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -32,9 +33,8 @@ public class CategoryService {
     }
 
 
-    //@PostAuthorize("returnObject.restaurant.user.username == authentication.name")
-    public Category findCategoryByNameAndRestaurant(String name,UUID restaurantId) {
-        return categoryRepository.findCategoryByNameAndRestaurant_Id(name,restaurantId).orElse(null);
+    public Optional<Category> findCategoryByNameAndRestaurant(String name, UUID restaurantId) {
+        return categoryRepository.findCategoryByNameAndRestaurant_Id(name,restaurantId);
     }
 
 

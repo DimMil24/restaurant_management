@@ -4,206 +4,209 @@
     <title>Restaurant</title>
 </head>
 <body>
-    <div class="container-fluid px-4">
-        <div class="row mt-2 gx-5">
-            <div class="col-3 mt-4">
-                <div class="sticky-md-top d-none d-md-block ms-5">
-                    <h2 class="fw-semibold"> Categories</h2>
-                    <ul class="list-group list-group-flush ">
-                        <th:block th:each="c : ${categories}">
-                            <li class="list-group-item bg-dark-subtle border-0" th:text="${c.name}"></li>
-                        </th:block>
-                    </ul>
-                </div>
+<div class="container-fluid px-4">
+    <div class="row mt-2 gx-5">
+        <div class="col-3 mt-4">
+            <div class="sticky-md-top d-none d-md-block ms-5 overflow-y-auto vh-100 p-3">
+                <h2 class="fw-semibold"> Categories</h2>
+                <ul class="list-group list-group-flush ">
+                    <th:block th:each="c : ${categories}">
+                        <li class="list-group-item bg-dark-subtle border-0 mt-2" th:text="${c.name}"></li>
+                    </th:block>
+                </ul>
             </div>
-            <div class="col-md-6 mt-4 bg-secondary-subtle rounded">
-                    <ul class="list-group list-group-flush mt-4">
-                        <th:block th:each="c : ${categories}">
-                            <li class="list-group-item mt-2 mb-2 rounded bg-secondary-subtle border-0">
-                                <div>
-                                    <h3 class="fw-semibold" th:text="${c.name}"></h3>
-                                </div>
-                                <ul class="list-group list-group-flush border-top border-black">
-                                    <li class="list-group-item bg-secondary-subtle">
-                                        <th:block th:each="p : ${c.products}">
-                                            <div class="d-flex align-items-center justify-content-between mt-2 mb-2 p-3 border-bottom border-secondary-subtle">
-                                                <div>
-                                                    <div class="fw-bold" th:text="${p.name}"></div>
-                                                    <div th:text="${p.description}"></div>
-                                                    <div th:text="${p.price} + ' €' "></div>
-                                                </div>
+        </div>
+        <div class="col-md-6 mt-4 bg-secondary-subtle rounded">
+            <ul class="list-group list-group-flush mt-4">
+                <th:block th:each="c : ${categories}">
+                    <li class="list-group-item mt-2 mb-2 rounded bg-secondary-subtle border-0">
+                        <div>
+                            <h3 class="fw-semibold" th:text="${c.name}"></h3>
+                        </div>
+                        <ul class="list-group list-group-flush border-top border-black">
+                            <li class="list-group-item bg-secondary-subtle">
+                                <th:block th:each="p : ${c.products}">
+                                    <div class="d-flex align-items-center justify-content-between mt-2 mb-2 p-3 border-bottom border-secondary-subtle">
+                                        <div>
+                                            <div class="fw-bold" th:text="${p.name}"></div>
+                                            <div th:text="${p.description}"></div>
+                                            <div th:text="${p.price} + ' €' "></div>
+                                        </div>
 
-                                                <div>
-                                                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" th:data-id="${p.id}" data-bs-target="#OrderModal">
-                                                        Add to Cart
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </th:block>
-                                    </li>
-                                </ul>
+                                        <div>
+                                            <button type="button" class="btn btn-dark" data-bs-toggle="modal" th:data-id="${p.id}" data-bs-target="#OrderModal">
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </th:block>
                             </li>
-                        </th:block>
-                    </ul>
-            </div>
-            <div class="col-md-3 mt-4 bg-dark-subtle">
-                <div class="sticky-md-top ps-5">
+                        </ul>
+                    </li>
+                </th:block>
+            </ul>
+        </div>
+        <div class="col-md-3 mt-4">
+
+            <div class="sticky-md-top p-4 bg-secondary-subtle vh-100 d-flex flex-column justify-content-md-start rounded">
+                <div>
                     <h3 class="fw-semibold">Your Cart</h3>
-                    <div class="row card bg-secondary-subtle">
-                        <ul class="list-group list-group-flush mb-auto" id="cartList"></ul>
+                    <div class="row border-0 bg-secondary-subtle">
+                        <ul class="list-group list-group-flush" id="cartList"></ul>
                     </div>
                     <div id="TotalPrice" class="row col offset-md-6 mt-5" hidden></div>
-                    <div class="row mt-2">
-                        <button id="MakeOrder" class="btn btn-primary" type="button" hidden>
-                            Order
-                        </button>
-                    </div>
+                </div>
+                <div class="row mt-2">
+                    <button id="MakeOrder" class="btn btn-primary" type="button" hidden>
+                        Order
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="modal fade" id="OrderModal" th:data-restaurant="${restaurant.id}" tabindex="-1" role="dialog" aria-labelledby="OrderModal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header border-0">
-                    <h3 class="modal-title" id="ProductTitle"></h3>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div>
-                            <div class="d-flex flex-column justify-content-center">
-                                <h3 id="ProductPrice"></h3>
-                                <h5 id="ProductDesc"></h5>
-                                <h4 id="ProductCategory"></h4>
-                            </div>
+<div class="modal fade" id="OrderModal" th:data-restaurant="${restaurant.id}" tabindex="-1" role="dialog" aria-labelledby="OrderModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h3 class="modal-title" id="ProductTitle"></h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div>
+                        <div class="d-flex flex-column justify-content-center">
+                            <h3 id="ProductPrice"></h3>
+                            <h5 id="ProductDesc"></h5>
+                            <h4 id="ProductCategory"></h4>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-evenly">
-                    <div class="d-flex justify-content-center align-items-start">
-                        <div class="d-flex align-items-center gap-3">
-                            <button id="minus" class="btn btn-primary" disabled>-</button>
-                            <span id="number" class="fs-3">1</span>
-                            <button id="plus" class="btn btn-primary">+</button>
-                        </div>
+            </div>
+            <div class="modal-footer justify-content-evenly">
+                <div class="d-flex justify-content-center align-items-start">
+                    <div class="d-flex align-items-center gap-3">
+                        <button id="minus" class="btn btn-primary" disabled>-</button>
+                        <span id="number" class="fs-3">1</span>
+                        <button id="plus" class="btn btn-primary">+</button>
                     </div>
-                    <button type="button" class="btn btn-primary" id="AddToCart">Add to cart</button>
                 </div>
+                <button type="button" class="btn btn-primary" id="AddToCart">Add to cart</button>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        const myModalEl = document.getElementById('OrderModal');
-        const addtoCartButton = document.getElementById("AddToCart")
-        const makeOrder = document.getElementById("MakeOrder")
-        const minusButton = document.getElementById('minus');
-        const plusButton = document.getElementById('plus');
-        const numberDisplay = document.getElementById('number');
-        const restaurantId = document.getElementById("OrderModal").dataset.restaurant
+<script>
+    const myModalEl = document.getElementById('OrderModal');
+    const addtoCartButton = document.getElementById("AddToCart")
+    const makeOrder = document.getElementById("MakeOrder")
+    const minusButton = document.getElementById('minus');
+    const plusButton = document.getElementById('plus');
+    const numberDisplay = document.getElementById('number');
+    const restaurantId = document.getElementById("OrderModal").dataset.restaurant
 
 
-        let cart = []
+    let cart = []
 
-        myModalEl.addEventListener('show.bs.modal', event => {
-            const button = event.relatedTarget
-            const productId = button.dataset.id
+    myModalEl.addEventListener('show.bs.modal', event => {
+        const button = event.relatedTarget
+        const productId = button.dataset.id
 
-            document.getElementById("AddToCart").setAttribute("data-product", productId)
-            getProductDetails(restaurantId,productId)
-        })
+        document.getElementById("AddToCart").setAttribute("data-product", productId)
+        getProductDetails(restaurantId,productId)
+    })
 
-        const getProductDetails = async (restaurant_id,product_id) => {
-            const response = await fetch('/api/v1/product/' + restaurant_id + "/" + product_id);
-            const data = await response.json();
-            document.getElementById("ProductTitle").textContent = data.name
-            document.getElementById("ProductDesc").textContent = data.description
-            document.getElementById("ProductPrice").textContent = data.price + " €"
-            document.getElementById("ProductPrice").setAttribute("data-price", data.price)
-            document.getElementById("ProductCategory").textContent = data.category
-        }
+    const getProductDetails = async (restaurant_id,product_id) => {
+        const response = await fetch('/api/v1/product/' + restaurant_id + "/" + product_id);
+        const data = await response.json();
+        document.getElementById("ProductTitle").textContent = data.name
+        document.getElementById("ProductDesc").textContent = data.description
+        document.getElementById("ProductPrice").textContent = data.price + " €"
+        document.getElementById("ProductPrice").setAttribute("data-price", data.price)
+        document.getElementById("ProductCategory").textContent = data.category
+    }
 
-        makeOrder.addEventListener('click', () => {
-            fetch("http://localhost:8080/order/newOrderV1", {
-                method: "POST",
-                redirect: "follow",
-                body: JSON.stringify({
-                    restaurantId: restaurantId,
-                    itemQuantity: cart,
-                }),
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                }
-                // Adding headers to the request
-            })
-        })
-
-        addtoCartButton.addEventListener('click', () => {
-            let product_id = document.getElementById("AddToCart").getAttribute("data-product")
-            if (cart.find(x => x.id === product_id)) {
-                console.log(cart)
-                let t = cart.find(x => x.id === product_id)
-                t.quantity = parseInt(t.quantity) + parseInt(count)
-                const updateListItem = document.getElementById(`product_${product_id}`)
-                updateListItem.innerHTML = document.getElementById("ProductTitle").textContent + ' ' +
-                    document.getElementById("ProductPrice").textContent + '  x' + t.quantity
-                const modal = bootstrap.Modal.getInstance(myModalEl)
-                modal.hide();
-                document.getElementById("TotalPrice").textContent = "Total Price: " +  getCartPrice() + ' €'
-                return true
+    makeOrder.addEventListener('click', () => {
+        fetch("http://localhost:8080/order/newOrderV1", {
+            method: "POST",
+            redirect: "follow",
+            body: JSON.stringify({
+                restaurantId: restaurantId,
+                itemQuantity: cart,
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
             }
-            cart = [...cart,{
-                id: document.getElementById("AddToCart").getAttribute("data-product"),
-                quantity: count,
-                price: document.getElementById("ProductPrice").dataset.price,
-            }]
-            const li = document.createElement('li')
-            li.className = 'list-group-item'
-            li.innerText = document.getElementById("ProductTitle").textContent + ' ' +
-                document.getElementById("ProductPrice").textContent + '  x' + count
-            li.setAttribute("id", `product_${product_id}`)
-            const cartContainer = document.getElementById("cartList")
-            cartContainer.appendChild(li)
-            document.getElementById("TotalPrice").removeAttribute("hidden")
-            document.getElementById("MakeOrder").removeAttribute("hidden")
-            document.getElementById("TotalPrice").textContent = "Total Price: " +  getCartPrice() + ' €'
-            const modal = bootstrap.Modal.getInstance(myModalEl)
+            // Adding headers to the request
+        })
+    })
+
+    addtoCartButton.addEventListener('click', () => {
+        let product_id = document.getElementById("AddToCart").getAttribute("data-product")
+        if (cart.find(x => x.id === product_id)) {
             console.log(cart)
+            let t = cart.find(x => x.id === product_id)
+            t.quantity = parseInt(t.quantity) + parseInt(count)
+            const updateListItem = document.getElementById(`product_${product_id}`)
+            updateListItem.innerHTML = document.getElementById("ProductTitle").textContent + ' ' +
+                document.getElementById("ProductPrice").textContent + '  x' + t.quantity
+            const modal = bootstrap.Modal.getInstance(myModalEl)
             modal.hide();
-            count = 1
-            updateCounter()
-        })
-
-        let count = 1;
-
-        function updateCounter() {
-            numberDisplay.textContent = count;
-            minusButton.disabled = count <= 1;
+            document.getElementById("TotalPrice").textContent = "Total Price: " +  getCartPrice() + ' €'
+            return true
         }
+        cart = [...cart,{
+            id: document.getElementById("AddToCart").getAttribute("data-product"),
+            quantity: count,
+            price: document.getElementById("ProductPrice").dataset.price,
+        }]
+        const li = document.createElement('li')
+        li.className = 'list-group-item bg-secondary-subtle border-0'
+        li.innerText = document.getElementById("ProductTitle").textContent + ' ' +
+            document.getElementById("ProductPrice").textContent + '  x' + count
+        li.setAttribute("id", `product_${product_id}`)
+        const cartContainer = document.getElementById("cartList")
+        cartContainer.appendChild(li)
+        document.getElementById("TotalPrice").removeAttribute("hidden")
+        document.getElementById("MakeOrder").removeAttribute("hidden")
+        document.getElementById("TotalPrice").textContent = "Total Price: " +  getCartPrice() + ' €'
+        const modal = bootstrap.Modal.getInstance(myModalEl)
+        console.log(cart)
+        modal.hide();
+        count = 1
+        updateCounter()
+    })
 
-        minusButton.addEventListener('click', () => {
-            if (count > 1) {
-                count--;
-                updateCounter();
-            }
-        });
+    let count = 1;
 
-        plusButton.addEventListener('click', () => {
-            count++;
+    function updateCounter() {
+        numberDisplay.textContent = count;
+        minusButton.disabled = count <= 1;
+    }
+
+    minusButton.addEventListener('click', () => {
+        if (count > 1) {
+            count--;
             updateCounter();
-        });
-
-        function getCartPrice() {
-            let price = 0
-            for (let i = 0; i < cart.length; i++) {
-                price = price + cart[i].price * cart[i].quantity
-            }
-            return price
         }
+    });
 
-        // Initial state
+    plusButton.addEventListener('click', () => {
+        count++;
         updateCounter();
-    </script>
+    });
+
+    function getCartPrice() {
+        let price = 0
+        for (let i = 0; i < cart.length; i++) {
+            price = price + cart[i].price * cart[i].quantity
+        }
+        return price
+    }
+
+    // Initial state
+    updateCounter();
+</script>
 </body>
 </html>

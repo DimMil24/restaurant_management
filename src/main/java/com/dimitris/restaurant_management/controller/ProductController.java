@@ -60,8 +60,13 @@ public class ProductController {
     }
 
     @PostMapping("/newCategory")
-    public String newCategory(CategoryRequest categoryRequest,
+    public String newCategory(@Valid CategoryRequest categoryRequest,
                               @AuthenticationPrincipal User user) {
+        if (categoryService.findCategoryByNameAndRestaurant(categoryRequest.name(),
+                user.getRestaurant().getId()).isPresent())
+        {
+            return "redirect:/product/categories?duplicate=true"; //Implement Better Error Handling
+        }
         categoryService.createCategory(categoryRequest.name(),user.getRestaurant());
         return "redirect:/product/categories";
     }

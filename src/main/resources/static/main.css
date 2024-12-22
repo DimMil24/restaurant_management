@@ -1,0 +1,8 @@
+body, thead, tbody, tr, th, td {
+    background-color: #ced4da !important;
+    border-color: #343538 !important;
+}
+
+nav {
+    background-color: #caccd5 !important;
+}

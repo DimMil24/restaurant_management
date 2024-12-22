@@ -42,9 +42,9 @@ public class ProductService {
     public Product generateProduct(ProductRequest productRequest, Restaurant restaurant) {
         var category = categoryService.findCategoryByNameAndRestaurant(productRequest.category(),
                                                                         restaurant.getId());
-        if (category != null) {
+        if (category.isPresent()) {
             return new Product(productRequest.name(), BigDecimal.valueOf(productRequest.price()),
-                    category,true, productRequest.description(), restaurant);
+                    category.get(),true, productRequest.description(), restaurant);
         } else {
             Category newCategory = categoryService.createCategory(productRequest.category(),restaurant);
             return new Product(productRequest.name(), BigDecimal.valueOf(productRequest.price()), newCategory,
