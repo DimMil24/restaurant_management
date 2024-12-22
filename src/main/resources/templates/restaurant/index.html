@@ -4,23 +4,29 @@
     <title>Restaurant</title>
 </head>
 <body>
-    <div class="container-md">
+    <div class="container-fluid px-4">
         <div class="row mt-2 gx-5">
             <div class="col-3 mt-4">
-
+                <div class="sticky-md-top d-none d-md-block ms-5">
+                    <h2 class="fw-semibold"> Categories</h2>
+                    <ul class="list-group list-group-flush ">
+                        <th:block th:each="c : ${categories}">
+                            <li class="list-group-item bg-dark-subtle border-0" th:text="${c.name}"></li>
+                        </th:block>
+                    </ul>
+                </div>
             </div>
-            <div class="col-md-6">
-                <h1 th:text="${restaurant.name}"></h1>
+            <div class="col-md-6 mt-4 bg-secondary-subtle rounded">
                     <ul class="list-group list-group-flush mt-4">
                         <th:block th:each="c : ${categories}">
-                            <li class="list-group-item mt-2 mb-2 border rounded">
+                            <li class="list-group-item mt-2 mb-2 rounded bg-secondary-subtle border-0">
                                 <div>
-                                    <h3 class="fw-bolder" th:text="${c.name}"></h3>
+                                    <h3 class="fw-semibold" th:text="${c.name}"></h3>
                                 </div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">
+                                <ul class="list-group list-group-flush border-top border-black">
+                                    <li class="list-group-item bg-secondary-subtle">
                                         <th:block th:each="p : ${c.products}">
-                                            <div class="d-flex align-items-center justify-content-between mt-2 mb-2">
+                                            <div class="d-flex align-items-center justify-content-between mt-2 mb-2 p-3 border-bottom border-secondary-subtle">
                                                 <div>
                                                     <div class="fw-bold" th:text="${p.name}"></div>
                                                     <div th:text="${p.description}"></div>
@@ -40,19 +46,18 @@
                         </th:block>
                     </ul>
             </div>
-
-            <div class="col-md-3 mt-4">
-                <div class="row card">
-                    <div class="card-header">
-                        Your Order
+            <div class="col-md-3 mt-4 bg-dark-subtle">
+                <div class="sticky-md-top ps-5">
+                    <h3 class="fw-semibold">Your Cart</h3>
+                    <div class="row card bg-secondary-subtle">
+                        <ul class="list-group list-group-flush mb-auto" id="cartList"></ul>
                     </div>
-                    <ul class="list-group list-group-flush mb-auto" id="cartList"></ul>
-                </div>
-                <div id="TotalPrice" class="row col offset-md-6 mt-5" hidden></div>
-                <div class="row mt-2">
-                    <button id="MakeOrder" class="btn btn-primary" type="button" hidden>
-                        Order
-                    </button>
+                    <div id="TotalPrice" class="row col offset-md-6 mt-5" hidden></div>
+                    <div class="row mt-2">
+                        <button id="MakeOrder" class="btn btn-primary" type="button" hidden>
+                            Order
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
