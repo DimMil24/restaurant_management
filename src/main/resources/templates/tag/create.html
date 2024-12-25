@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Tag</title>
+</head>
+<body>
+<div class="container">
+    <h1>Create</h1>
+    <h4>Tag</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form th:action="@{/tag/create}" th:object="${tag}" method="post">
+                <div class="form-group">
+                    <label for="name" class="control-label">Name</label>
+                    <input id="name" th:field="*{name}" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a class="link" th:href="@{/tag/index}">Back to List</a>
+    </div>
+</div>
+
+</body>
+</html>

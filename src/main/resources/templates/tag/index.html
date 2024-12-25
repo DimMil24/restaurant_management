@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tags</title>
+</head>
+<body>
+
+<div class="container">
+    <h1>Index</h1>
+
+    <p>
+        <a class="link" th:href="@{/tag/create}">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="tag : ${Tags}">
+            <td th:text="${tag.name}">
+            </td>
+            <td>
+                <a th:href="@{/tag/edit/{id}(id=${tag.id})}">Edit</a> |
+                <a th:href="@{/tag/delete/{id}(id=${tag.id})}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

@@ -24,6 +24,9 @@ public class Restaurant implements Serializable {
     @OneToOne(mappedBy = "restaurant")
     private User user;
 
+    @OneToMany(mappedBy = "restaurant")
+    private List<RestaurantTag> tags;
+
     public Restaurant() {
     }
 
@@ -80,5 +83,13 @@ public class Restaurant implements Serializable {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public List<RestaurantTag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<RestaurantTag> tags) {
+        this.tags = tags;
     }
 }
