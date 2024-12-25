@@ -47,7 +47,6 @@
             </ul>
         </div>
         <div class="col-md-3 mt-4">
-
             <div class="sticky-md-top p-4 bg-secondary-subtle vh-100 d-flex flex-column justify-content-md-start rounded">
                 <div>
                     <h3 class="fw-semibold">Your Cart</h3>
@@ -162,7 +161,7 @@
             price: document.getElementById("ProductPrice").dataset.price,
         }]
         const li = document.createElement('li')
-        li.className = 'list-group-item bg-secondary-subtle border-0'
+            li.className = 'list-group-item bg-secondary-subtle border-0'
         li.innerText = document.getElementById("ProductTitle").textContent + ' ' +
             document.getElementById("ProductPrice").textContent + '  x' + count
         li.setAttribute("id", `product_${product_id}`)
