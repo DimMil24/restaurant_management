@@ -20,8 +20,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/","/register/**" ,"/css/**","/lib/**", "/images/**", "/error/**","/restaurant/**","/api/v1/**").permitAll()
                         .requestMatchers("/api/v1/newOrder").hasAnyRole("ADMIN", "USER","OWNER")
-                        .requestMatchers("/","/register/**" ,"/lib/**", "/images/**", "/error/**","/restaurant/**","/api/v1/**").permitAll()
                         .requestMatchers("/product").hasAnyRole("OWNER","ADMIN")
                         .requestMatchers("/table").hasAnyRole("OWNER","ADMIN")
                         .requestMatchers("/order").hasAnyRole("OWNER","ADMIN")

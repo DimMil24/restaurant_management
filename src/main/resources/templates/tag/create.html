@@ -8,6 +8,9 @@
 <div class="container">
     <h1>Create</h1>
     <h4>Tag</h4>
+    <div class="link-danger" th:if="${param.duplicate}">
+        Tag already exists.
+    </div>
     <hr />
     <div class="row">
         <div class="col-md-4">

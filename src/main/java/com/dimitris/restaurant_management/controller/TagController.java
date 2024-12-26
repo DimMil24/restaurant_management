@@ -5,10 +5,7 @@ import com.dimitris.restaurant_management.services.TagService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/tag")
 @Controller
@@ -34,7 +31,16 @@ public class TagController {
 
     @PostMapping("/create")
     public String createTag(@Valid @ModelAttribute("tag") TagDTO tag) {
+        if (tagService.getTagByName(tag.getName()).isPresent()) {
+            return "redirect:/tag/create?duplicate=true";
+        }
         tagService.createNewTag(tag.getName());
+        return "redirect:/tag";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable int id) {
+        tagService.deleteTag(id);
         return "redirect:/tag";
     }
 }

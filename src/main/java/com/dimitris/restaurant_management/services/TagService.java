@@ -28,13 +28,16 @@ public class TagService {
     public Optional<Tag> getTagById(long id) {
         return tagRepository.findById(id);
     }
+    public Optional<Tag> getTagByName(String name) {
+        return tagRepository.findTagByName(name);
+    }
 
     public List<Tag> findAll() {
         return tagRepository.findAll();
     }
 
-    public Tag createNewTag(String name) {
-        return tagRepository.save(new Tag(name));
+    public void createNewTag(String name) {
+        tagRepository.save(new Tag(name));
     }
 
     public Tag updateTag(long id, Tag tag) {
