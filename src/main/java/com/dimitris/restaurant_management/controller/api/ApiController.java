@@ -33,7 +33,7 @@ public class ApiController {
                 product.getCategory().getName(),product.getDescription());
         return ResponseEntity.ok(productResponse);
     }
-
+//TODO: Implement proper handling of post Order
     @PostMapping("/newOrder")
     public ResponseEntity<String> newOrder(@RequestBody @Valid NewOrderRequest newOrderRequest, @AuthenticationPrincipal User user) {
         customerOrderService.AddUserOrder(newOrderRequest,user);

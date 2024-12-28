@@ -2,10 +2,11 @@ package com.dimitris.restaurant_management.entities;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Tag {
+public class Tag implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;

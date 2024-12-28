@@ -24,7 +24,7 @@ public class Restaurant implements Serializable {
     @OneToOne(mappedBy = "restaurant")
     private User user;
 
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.EAGER)
     private List<RestaurantTag> tags;
 
     public Restaurant() {

@@ -13,6 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 @EnableWebSecurity
 public class SecurityConfig {
+    //TODO: IMPLEMENT AUTHENTICATION MANAGER
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

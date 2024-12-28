@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+<div class="container-md mt-4 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-5">
+            <h2>Edit</h2>
+            <div class="link-danger" th:if="${param.userDuplicate}">
+                User already exists with that Username.</div>
+            <div class="link-danger" th:if="${param.restaurantDuplicate}">
+                Restaurant already exists with that Name.</div>
+            <form th:action="@{/profile/edit/{id}(id=${user.id})}" method="post">
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="username" type="text" name="username" th:value="${user.username}" required/>
+                    <label class="control-label" for="username">Username</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="restaurantName" type="text" name="restaurantName" th:value="${user.restaurant.name}" required/>
+                    <label class="control-label" for="restaurantName">Restaurant Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input class="form-control" type="text" id="restaurantDesc" name="restaurantDesc" th:value="${user.restaurant.description}"/>
+                    <label class="control-label" for="restaurantDesc">Restaurant Description</label>
+                </div>
+                <div class="form-check mb-3 overflow-y-auto" style="height: 150px">
+                    <label for="tags" class="control-label"></label>
+                    <th:block th:each="tag : ${tags}">
+                        <br/>
+                        <input class="form-check-input"
+                               id="tags"
+                               type="checkbox"
+                               name="tags"
+                               th:value="${tag.id}"
+                               placeholder=""
+                               th:checked="${#lists.contains(restaurantTags.![tag],tag)}"/>
+
+                        <span th:text="${tag.name}"></span>
+                    </th:block>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save Changes" class="btn btn-primary"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
