@@ -45,7 +45,7 @@ public class RegisterService {
         }
         User user = userService.createUser(registerOwnerDTO.getUsername(),
                 passwordEncoder.encode(registerOwnerDTO.getPassword()));
-        roleService.addRolesToUser(List.of("ROLE_ADMIN", "ROLE_OWNER"), user);
+        userService.assignUserToRoles(List.of("ROLE_ADMIN", "ROLE_OWNER"), user);
         Restaurant restaurant = restaurantService.addRestaurant(registerOwnerDTO.getRestaurantName(),
                 registerOwnerDTO.getRestaurantDesc());
         userService.associateUserToRestaurant(user, restaurant);
@@ -61,7 +61,7 @@ public class RegisterService {
         if (!userService.checkUserExists(registerUserRequest.username())) {
             User user = userService.createUser(registerUserRequest.username(),
                     passwordEncoder.encode(registerUserRequest.password()));
-            roleService.addRolesToUser(List.of("ROLE_USER"), user);
+            userService.assignUserToRoles(List.of("ROLE_USER"), user);
             return true;
         }
         return false;

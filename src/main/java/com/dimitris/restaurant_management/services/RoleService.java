@@ -1,12 +1,11 @@
 package com.dimitris.restaurant_management.services;
 
 import com.dimitris.restaurant_management.entities.Role;
-import com.dimitris.restaurant_management.entities.User;
 import com.dimitris.restaurant_management.repositories.RoleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoleService {
@@ -25,14 +24,8 @@ public class RoleService {
         roleRepository.save(new Role(null,role));
     }
 
-    @Transactional
-    public void addRolesToUser(List<String> roles, User user) {
-        for (String name : roles) {
-            Role role = roleRepository.findByName(name).orElseThrow(() ->
-                    new RuntimeException("Role Not Found"));
-            role.getUserList().add(user);
-            roleRepository.save(role);
-        }
+    public Optional<Role> getRole(String roleName) {
+        return roleRepository.findByName(roleName);
     }
 
 }
