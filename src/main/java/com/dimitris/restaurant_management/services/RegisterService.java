@@ -4,7 +4,17 @@ import com.dimitris.restaurant_management.entities.Restaurant;
 import com.dimitris.restaurant_management.entities.User;
 import com.dimitris.restaurant_management.entities.requests.RegisterOwnerDTO;
 import com.dimitris.restaurant_management.entities.requests.RegisterUserRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,16 +26,19 @@ public class RegisterService {
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final RoleService roleService;
-    private final TagService tagService;
+    private final AuthenticationManager authenticationManager;
+    private final SecurityContextRepository securityContextRepository =
+            new HttpSessionSecurityContextRepository();
+    private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
 
 
     public RegisterService(RestaurantService restaurantService, PasswordEncoder passwordEncoder,
-                           UserService userService, RoleService roleService, TagService tagService) {
+                           UserService userService, RoleService roleService, AuthenticationManager authenticationManager) {
         this.restaurantService = restaurantService;
         this.passwordEncoder = passwordEncoder;
         this.userService = userService;
         this.roleService = roleService;
-        this.tagService = tagService;
+        this.authenticationManager = authenticationManager;
     }
 
 
@@ -49,7 +62,7 @@ public class RegisterService {
         Restaurant restaurant = restaurantService.addRestaurant(registerOwnerDTO.getRestaurantName(),
                 registerOwnerDTO.getRestaurantDesc());
         userService.associateUserToRestaurant(user, restaurant);
-        tagService.associateTagsToRestaurant(restaurant,registerOwnerDTO.getTags());
+        restaurantService.associateRestaurantToTags(restaurant, registerOwnerDTO.getTags());
         return 0;
     }
 
@@ -65,5 +78,29 @@ public class RegisterService {
             return true;
         }
         return false;
+    }
+
+    public void loginUser(RegisterUserRequest registerUserRequest,
+                          HttpServletRequest request,
+                          HttpServletResponse response) {
+        UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
+                registerUserRequest.username(), registerUserRequest.password());
+        Authentication authentication = authenticationManager.authenticate(token);
+        SecurityContext context = securityContextHolderStrategy.createEmptyContext();
+        context.setAuthentication(authentication);
+        securityContextHolderStrategy.setContext(context);
+        securityContextRepository.saveContext(context, request, response);
+    }
+
+    public void loginOwner(RegisterOwnerDTO registerOwnerDTO,
+                          HttpServletRequest request,
+                          HttpServletResponse response) {
+        UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
+                registerOwnerDTO.getUsername(), registerOwnerDTO.getPassword());
+        Authentication authentication = authenticationManager.authenticate(token);
+        SecurityContext context = securityContextHolderStrategy.createEmptyContext();
+        context.setAuthentication(authentication);
+        securityContextHolderStrategy.setContext(context);
+        securityContextRepository.saveContext(context, request, response);
     }
 }
