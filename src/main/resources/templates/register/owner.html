@@ -4,47 +4,61 @@
     <title>Register Owner</title>
 </head>
 <body>
-    <div class="container-md mt-4 h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-md-5">
-                <h2>Register</h2>
-                <h4>Please fill out the form below</h4>
-                <div class="link-danger" th:if="${param.userDuplicate}">
-                    User already exists with that Username.</div>
-                <div class="link-danger" th:if="${param.restaurantDuplicate}">
-                    Restaurant already exists with that Name.</div>
-                <form th:action="@{/register/createOwner}" th:object="${owner}" method="post">
+<div class="container-md mt-4 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-5">
+            <h2>Register</h2>
+            <h4>Please fill out the form below</h4>
+            <div class="link-danger" th:if="${param.userDuplicate}">
+                User already exists with that Username.</div>
+            <div class="link-danger" th:if="${param.restaurantDuplicate}">
+                Restaurant already exists with that Name.</div>
+            <form th:action="@{/register/createOwner}" th:object="${owner}" method="post">
+                <div class="form-group">
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="username" type="text" th:field="*{username}" placeholder="" required/>
+                        <input class="form-control" id="username" type="text" th:field="*{username}" placeholder=""/>
                         <label class="control-label" for="username">Username</label>
                     </div>
+                    <div th:if="${#fields.hasErrors('username')}" class="text-danger" th:errors="*{username}"></div>
+                </div>
+                <div class="form-group">
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="password" type="password" th:field="*{password}" placeholder="" required/>
+                        <input class="form-control" id="password" type="password" th:field="*{password}" name="password" placeholder=""/>
                         <label class="control-label" for="password">Password</label>
                     </div>
+                    <p th:if="${#fields.hasErrors('password')}" class="text-danger" th:errors="*{password}"></p>
+
+                </div>
+                <div class="form-group">
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="restaurantName" type="text" th:field="*{restaurantName}" placeholder="" required/>
+                        <input class="form-control" id="restaurantName" type="text" th:field="*{restaurantName}" name="restaurantName" placeholder=""/>
                         <label class="control-label" for="restaurantName">Restaurant Name</label>
                     </div>
+                    <p th:if="${#fields.hasErrors('restaurantName')}" class="text-danger" th:errors="*{restaurantName}"></p>
+
+                </div>
+                <div class="form-group">
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="restaurantDesc" th:field="*{restaurantDesc}" placeholder=""></textarea>
+                        <textarea class="form-control" id="restaurantDesc" th:field="*{restaurantDesc}" name="restaurantDesc" placeholder=""></textarea>
                         <label class="control-label" for="restaurantDesc">Restaurant Description</label>
                     </div>
+                    <p th:if="${#fields.hasErrors('restaurantDesc')}" class="text-danger" th:errors="*{restaurantDesc}"></p>
 
-                    <div class="form-check mb-3 overflow-y-auto" style="height: 150px">
-                        <label for="tags" class="control-label"></label>
-                        <th:block th:each="tag : ${tags}">
-                            <input class="form-check-input" id="tags" type="checkbox" th:field="*{tags}" th:value="${tag.id}" placeholder=""/>
-                            <span th:text="${tag.name}"></span>
-                            <br>
-                        </th:block>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-primary" />
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="form-check mb-3 overflow-y-auto" style="height: 150px">
+                    <label for="tags" class="control-label"></label>
+                    <th:block th:each="tag : ${tags}">
+                        <input class="form-check-input" id="tags" type="checkbox" th:field="*{tags}" th:value="${tag.id}" placeholder=""/>
+                        <span th:text="${tag.name}"></span>
+                        <br>
+                    </th:block>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
         </div>
     </div>
+</div>
 </body>
 </html>

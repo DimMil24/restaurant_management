@@ -6,11 +6,11 @@ import java.util.List;
 public class RegisterOwnerDTO {
     @NotBlank(message = "Username cannot be empty or blank.")
     private String username;
-    @NotBlank
+    @NotBlank(message = "Password cannot be empty or blank.")
     private String password;
-    @NotBlank
+    @NotBlank(message = "Restaurant Name cannot be empty or blank.")
     private String restaurantName;
-    @NotBlank
+    @NotBlank(message = "Description cannot be empty or blank.")
     private String restaurantDesc;
     private List<Long> tags;
 

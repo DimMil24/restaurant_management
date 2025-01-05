@@ -3,7 +3,7 @@ package com.dimitris.restaurant_management.services;
 import com.dimitris.restaurant_management.entities.Restaurant;
 import com.dimitris.restaurant_management.entities.User;
 import com.dimitris.restaurant_management.entities.requests.RegisterOwnerDTO;
-import com.dimitris.restaurant_management.entities.requests.RegisterUserRequest;
+import com.dimitris.restaurant_management.entities.requests.RegisterUserDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -67,24 +67,24 @@ public class RegisterService {
     }
 
     @Transactional
-    public boolean registerUser(RegisterUserRequest registerUserRequest) {
+    public boolean registerUser(RegisterUserDTO registerUserDTO) {
         if (roleService.roleMissing("ROLE_USER")) {
             roleService.createRole("ROLE_USER");
         }
-        if (!userService.checkUserExists(registerUserRequest.username())) {
-            User user = userService.createUser(registerUserRequest.username(),
-                    passwordEncoder.encode(registerUserRequest.password()));
+        if (!userService.checkUserExists(registerUserDTO.getUsername())) {
+            User user = userService.createUser(registerUserDTO.getUsername(),
+                    passwordEncoder.encode(registerUserDTO.getPassword()));
             userService.assignUserToRoles(List.of("ROLE_USER"), user);
             return true;
         }
         return false;
     }
 
-    public void loginUser(RegisterUserRequest registerUserRequest,
+    public void loginUser(RegisterUserDTO registerUserDTO,
                           HttpServletRequest request,
                           HttpServletResponse response) {
         UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
-                registerUserRequest.username(), registerUserRequest.password());
+                registerUserDTO.getUsername(), registerUserDTO.getPassword());
         Authentication authentication = authenticationManager.authenticate(token);
         SecurityContext context = securityContextHolderStrategy.createEmptyContext();
         context.setAuthentication(authentication);

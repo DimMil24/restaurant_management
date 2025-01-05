@@ -22,7 +22,11 @@ public class User implements UserDetails, CredentialsContainer {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    @ManyToMany(mappedBy = "userList", fetch = FetchType.EAGER)
+    @ManyToMany
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roleList;
 
     public User() {}

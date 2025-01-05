@@ -42,7 +42,9 @@ public class UserService {
     public void assignUserToRoles(List<String> roles, User user) {
         List<Role> roleList = new ArrayList<>();
         for (String name : roles) {
-            roleList.add(roleService.getRole(name).get());
+            if (roleService.getRole(name).isPresent()) {
+                roleList.add(roleService.getRole(name).get());
+            }
         }
         user.setRoleList(roleList);
         userRepository.save(user);
