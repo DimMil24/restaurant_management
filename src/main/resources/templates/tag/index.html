@@ -23,7 +23,7 @@
         </thead>
         <tbody>
         <tr th:each="tag : ${Tags}">
-            <td th:text="${tag.name}">
+            <td class="align-middle" th:text="${tag.name}">
             </td>
             <td>
                 <form method="post" th:action="@{/tag/delete/{id}(id=${tag.id})}">

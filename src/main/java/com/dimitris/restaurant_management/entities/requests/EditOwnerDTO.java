@@ -5,23 +5,18 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 
 public class EditOwnerDTO {
-    @NotBlank(message = "Username cannot be empty or blank.")
-    private String username;
-    @NotBlank
+    @NotBlank(message = "Restaurant Name cannot be empty or blank.")
     private String restaurantName;
-    @NotBlank
+    @NotBlank(message = "Description cannot be empty or blank.")
     private String restaurantDesc;
     private List<Long> tags;
 
     public EditOwnerDTO() {
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public EditOwnerDTO(String restaurantName, String restaurantDesc) {
+        this.restaurantName = restaurantName;
+        this.restaurantDesc = restaurantDesc;
     }
 
     public String getRestaurantName() {

@@ -17,14 +17,14 @@ public class Restaurant implements Serializable {
     private String description;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<Category> categories;
 
     @JsonIgnore
     @OneToOne(mappedBy = "restaurant")
     private User user;
 
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<RestaurantTag> tags;
 
     public Restaurant() {

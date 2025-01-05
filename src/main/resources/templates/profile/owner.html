@@ -13,20 +13,18 @@
                 User already exists with that Username.</div>
             <div class="link-danger" th:if="${param.restaurantDuplicate}">
                 Restaurant already exists with that Name.</div>
-            <form th:action="@{/profile/edit/{id}(id=${user.id})}" method="post">
+            <form th:action="@{/profile/editOwner}" th:object="${editOwner}" method="post">
                 <div class="form-floating mb-3">
-                    <input class="form-control" id="username" type="text" name="username" th:value="${user.username}" required/>
-                    <label class="control-label" for="username">Username</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input class="form-control" id="restaurantName" type="text" name="restaurantName" th:value="${user.restaurant.name}" required/>
+                    <input class="form-control" id="restaurantName" type="text" th:field="*{restaurantName}" required/>
                     <label class="control-label" for="restaurantName">Restaurant Name</label>
+                    <p th:if="${#fields.hasErrors('restaurantName')}" class="text-danger" th:errors="*{restaurantName}"></p>
                 </div>
                 <div class="form-floating mb-3">
-                    <input class="form-control" type="text" id="restaurantDesc" name="restaurantDesc" th:value="${user.restaurant.description}"/>
+                    <input class="form-control" type="text" id="restaurantDesc" th:field="*{restaurantDesc}"/>
                     <label class="control-label" for="restaurantDesc">Restaurant Description</label>
+                    <p th:if="${#fields.hasErrors('restaurantDesc')}" class="text-danger" th:errors="*{restaurantDesc}"></p>
                 </div>
-                <div class="form-check mb-3 overflow-y-auto" style="height: 150px">
+                <div class="form-check mb-3 overflow-y-auto" style="height: 250px">
                     <label for="tags" class="control-label"></label>
                     <th:block th:each="tag : ${tags}">
                         <br/>
