@@ -1,5 +1,6 @@
 package com.dimitris.restaurant_management.controller;
 
+import com.dimitris.restaurant_management.entities.RestaurantTag;
 import com.dimitris.restaurant_management.entities.Tag;
 import com.dimitris.restaurant_management.entities.User;
 import com.dimitris.restaurant_management.entities.requests.EditOwnerDTO;
@@ -36,13 +37,20 @@ public class ProfileController {
         return tagService.findAll();
     }
 
+    @ModelAttribute("user")
+    public User getUser(@AuthenticationPrincipal User user) {
+        return user;
+    }
+
+    @ModelAttribute("restaurantTags")
+    public List<RestaurantTag> getRestaurantTags(@AuthenticationPrincipal User user) {
+        var restaurant = restaurantService.getRestaurantById(user.getRestaurant().getId());
+        return restaurant.getTags();
+    }
+
     @GetMapping
     public String owner(Model model,@AuthenticationPrincipal User user) {
-        var restaurant = restaurantService.getRestaurantById(user.getRestaurant().getId());
-        model.addAttribute("editOwner",
-                new EditOwnerDTO( restaurant.getName(), restaurant.getDescription()));
-        model.addAttribute("user", user);
-        model.addAttribute("restaurantTags", restaurant.getTags());
+        model.addAttribute("editOwner", new EditOwnerDTO( user.getRestaurant().getName(), user.getRestaurant().getDescription()));
         return "profile/owner";
     }
 //CONDITIONALS
@@ -51,14 +59,17 @@ public class ProfileController {
                             BindingResult bindingResult,
                             Model model,
                             @AuthenticationPrincipal User user) {
-        var restaurant = restaurantService.getRestaurantById(user.getRestaurant().getId());
         if (bindingResult.hasErrors()) {
             model.addAttribute("editOwner", editOwnerDTO);
-            model.addAttribute("user", user);
-            model.addAttribute("restaurantTags", restaurant.getTags());
+            return "profile/owner";
+        }
+        if (restaurantService.RestaurantExistsByName(editOwnerDTO.getRestaurantName())) {
+            model.addAttribute("editOwner", editOwnerDTO);
+            model.addAttribute("errorMessage", "Restaurant already exists");
             return "profile/owner";
         }
         restaurantService.editRestaurant(editOwnerDTO,user.getRestaurant());
+        restaurantService.updateTagsToRestaurant(user.getRestaurant(),editOwnerDTO.getTags());
         return "redirect:/profile";
     }
 }

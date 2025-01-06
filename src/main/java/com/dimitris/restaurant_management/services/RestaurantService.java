@@ -72,7 +72,7 @@ public class RestaurantService {
         restaurantRepository.save(restaurant);
     }
 
-    public boolean findRestaurantByName(String name) {
+    public boolean RestaurantExistsByName(String name) {
         return restaurantRepository.findByName(name).isPresent();
     }
 
@@ -81,7 +81,6 @@ public class RestaurantService {
     public void editRestaurant(EditOwnerDTO editOwnerDTO, Restaurant restaurant) {
         restaurant.setName(editOwnerDTO.getRestaurantName());
         restaurant.setDescription(editOwnerDTO.getRestaurantDesc());
-        updateTagsToRestaurant(restaurant, editOwnerDTO.getTags());
         restaurantRepository.save(restaurant);
     }
 

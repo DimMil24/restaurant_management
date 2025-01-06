@@ -48,9 +48,4 @@ public class TagService {
     public void deleteTag(long id) {
         tagRepository.deleteById(id);
     }
-
-    public List<Tag> getTagsByRestaurantId(UUID restaurantId) {
-        //TODO
-        return List.of();
-    }
 }

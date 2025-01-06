@@ -53,7 +53,7 @@ public class RegisterService {
         if(userService.checkUserExists(registerOwnerDTO.getUsername())) {
             return 1;
         }
-        if (restaurantService.findRestaurantByName(registerOwnerDTO.getRestaurantName())) {
+        if (restaurantService.RestaurantExistsByName(registerOwnerDTO.getRestaurantName())) {
             return 2;
         }
         User user = userService.createUser(registerOwnerDTO.getUsername(),

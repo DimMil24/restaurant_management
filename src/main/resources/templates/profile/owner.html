@@ -9,10 +9,7 @@
     <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-md-5">
             <h2>Edit</h2>
-            <div class="link-danger" th:if="${param.userDuplicate}">
-                User already exists with that Username.</div>
-            <div class="link-danger" th:if="${param.restaurantDuplicate}">
-                Restaurant already exists with that Name.</div>
+            <span class="text-danger" th:if="${errorMessage != null}" th:text="${errorMessage}"/>
             <form th:action="@{/profile/editOwner}" th:object="${editOwner}" method="post">
                 <div class="form-floating mb-3">
                     <input class="form-control" id="restaurantName" type="text" th:field="*{restaurantName}" required/>

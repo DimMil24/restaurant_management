@@ -20,7 +20,6 @@ import javax.sql.DataSource;
 @EnableMethodSecurity
 @EnableWebSecurity
 public class SecurityConfig {
-    //TODO: IMPLEMENT AUTHENTICATION MANAGER
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, DataSource dataSource) throws Exception {
