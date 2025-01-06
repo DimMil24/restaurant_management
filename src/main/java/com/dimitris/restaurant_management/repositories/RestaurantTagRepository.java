@@ -7,9 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface RestaurantTagRepository extends JpaRepository<RestaurantTag, Long> {
-    Optional<RestaurantTag> findByTag_Id(Long tagId);
     List<RestaurantTag> findAllByRestaurant(Restaurant restaurant);
+    Optional<RestaurantTag> findByTag_IdAndRestaurant_Id(Long tagId, UUID restaurantId);
 }

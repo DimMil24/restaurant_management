@@ -35,6 +35,13 @@ public class RestaurantService {
         return restaurantRepository.findAll();
     }
 
+    public List<Restaurant> getRestaurantsByFilter(String[] filter) {
+        if (filter == null || filter.length == 0) {
+            return getAllRestaurants();
+        }
+        return restaurantRepository.findRestaurantsByTag(filter);
+    }
+
     public Restaurant getRestaurantById(UUID id) {
         return restaurantRepository.findById(id).orElseThrow();
     }
@@ -105,10 +112,8 @@ public class RestaurantService {
         }
 
         for (Long tagId : tagsToRemove) {
-            Optional<RestaurantTag> tagOptional = restaurantTagRepository.findByTag_Id(tagId);
-            if (tagOptional.isPresent()) {
-                restaurantTagRepository.delete(tagOptional.get());
-            }
+            Optional<RestaurantTag> tagOptional = restaurantTagRepository.findByTag_IdAndRestaurant_Id(tagId, restaurant.getId());
+            tagOptional.ifPresent(restaurantTagRepository::delete);
         }
     }
 }

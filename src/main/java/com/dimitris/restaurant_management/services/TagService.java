@@ -15,11 +15,9 @@ import java.util.UUID;
 public class TagService {
 
     private final TagRepository tagRepository;
-    private final RestaurantTagRepository restaurantTagRepository;
 
     public TagService(TagRepository tagRepository, RestaurantTagRepository restaurantTagRepository) {
         this.tagRepository = tagRepository;
-        this.restaurantTagRepository = restaurantTagRepository;
     }
 
     public Optional<Tag> getTagById(long id) {
