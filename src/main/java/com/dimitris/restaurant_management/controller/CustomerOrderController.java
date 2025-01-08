@@ -10,8 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RequestMapping("/order")
 @Controller
 public class CustomerOrderController {
@@ -40,14 +38,6 @@ public class CustomerOrderController {
     public String index(@PathVariable Long id, Model model) {
         model.addAttribute("orderDetails", customerOrderService.findOrder(id));
         return "order/details";
-    }
-
-    @PostMapping("/newOrder")
-    public String newOrder(@RequestParam List<Long> products,
-                           @RequestParam List<Long> quantity,
-                           @AuthenticationPrincipal User user) {
-        customerOrderService.AddOrder(products,quantity,user.getRestaurant(),user);
-        return "redirect:/order";
     }
 
     @PostMapping("/complete/{id}")

@@ -6,7 +6,6 @@ import com.dimitris.restaurant_management.entities.User;
 import com.dimitris.restaurant_management.entities.requests.EditOwnerDTO;
 import com.dimitris.restaurant_management.services.RestaurantService;
 import com.dimitris.restaurant_management.services.TagService;
-import com.dimitris.restaurant_management.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -24,12 +23,10 @@ import java.util.List;
 public class ProfileController {
     private final TagService tagService;
     private final RestaurantService restaurantService;
-    private final UserService userService;
 
-    public ProfileController(TagService tagService, RestaurantService restaurantService, UserService userService) {
+    public ProfileController(TagService tagService, RestaurantService restaurantService) {
         this.tagService = tagService;
         this.restaurantService = restaurantService;
-        this.userService = userService;
     }
 
     @ModelAttribute("tags")
@@ -63,7 +60,8 @@ public class ProfileController {
             model.addAttribute("editOwner", editOwnerDTO);
             return "profile/owner";
         }
-        if (restaurantService.RestaurantExistsByName(editOwnerDTO.getRestaurantName())) {
+        if (restaurantService.RestaurantExistsByName(editOwnerDTO.getRestaurantName())
+        && !user.getRestaurant().getName().equals(editOwnerDTO.getRestaurantName())) {
             model.addAttribute("editOwner", editOwnerDTO);
             model.addAttribute("errorMessage", "Restaurant already exists");
             return "profile/owner";

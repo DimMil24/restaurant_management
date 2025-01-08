@@ -43,18 +43,12 @@ public class RegisterService {
 
 
     @Transactional
-    public int registerRestaurantOwner(RegisterOwnerDTO registerOwnerDTO) {
+    public void registerRestaurantOwner(RegisterOwnerDTO registerOwnerDTO) {
         if (roleService.roleMissing("ROLE_ADMIN")) {
             roleService.createRole("ROLE_ADMIN");
         }
         if (roleService.roleMissing("ROLE_OWNER")) {
             roleService.createRole("ROLE_OWNER");
-        }
-        if(userService.checkUserExists(registerOwnerDTO.getUsername())) {
-            return 1;
-        }
-        if (restaurantService.RestaurantExistsByName(registerOwnerDTO.getRestaurantName())) {
-            return 2;
         }
         User user = userService.createUser(registerOwnerDTO.getUsername(),
                 passwordEncoder.encode(registerOwnerDTO.getPassword()));
@@ -63,21 +57,16 @@ public class RegisterService {
                 registerOwnerDTO.getRestaurantDesc());
         userService.associateUserToRestaurant(user, restaurant);
         restaurantService.associateRestaurantToTags(restaurant, registerOwnerDTO.getTags());
-        return 0;
     }
 
     @Transactional
-    public boolean registerUser(RegisterUserDTO registerUserDTO) {
+    public void registerUser(RegisterUserDTO registerUserDTO) {
         if (roleService.roleMissing("ROLE_USER")) {
             roleService.createRole("ROLE_USER");
         }
-        if (!userService.checkUserExists(registerUserDTO.getUsername())) {
-            User user = userService.createUser(registerUserDTO.getUsername(),
-                    passwordEncoder.encode(registerUserDTO.getPassword()));
-            userService.assignUserToRoles(List.of("ROLE_USER"), user);
-            return true;
-        }
-        return false;
+        User user = userService.createUser(registerUserDTO.getUsername(),
+                passwordEncoder.encode(registerUserDTO.getPassword()));
+        userService.assignUserToRoles(List.of("ROLE_USER"), user);
     }
 
     public void loginUser(RegisterUserDTO registerUserDTO,
@@ -93,8 +82,8 @@ public class RegisterService {
     }
 
     public void loginOwner(RegisterOwnerDTO registerOwnerDTO,
-                          HttpServletRequest request,
-                          HttpServletResponse response) {
+                           HttpServletRequest request,
+                           HttpServletResponse response) {
         UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
                 registerOwnerDTO.getUsername(), registerOwnerDTO.getPassword());
         Authentication authentication = authenticationManager.authenticate(token);

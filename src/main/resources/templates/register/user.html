@@ -10,8 +10,7 @@
       <div class="col-md-6">
         <h2>Register</h2>
         <h4>Please fill out the form below</h4>
-        <div class="link-danger" th:if="${param.userDuplicate}">
-          User already exists with that Username.</div>
+        <span class="text-danger" th:if="${errorMessage != null}" th:text="${errorMessage}"/>
         <form th:action="@{/register/createUser}" th:object="${user}" method="post">
           <div class="form-floating mb-3">
             <input class="form-control" id="username" type="text" th:field="*{username}" placeholder=""/>

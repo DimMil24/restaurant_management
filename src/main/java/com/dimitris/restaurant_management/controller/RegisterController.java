@@ -4,7 +4,9 @@ import com.dimitris.restaurant_management.entities.Tag;
 import com.dimitris.restaurant_management.entities.requests.RegisterOwnerDTO;
 import com.dimitris.restaurant_management.entities.requests.RegisterUserDTO;
 import com.dimitris.restaurant_management.services.RegisterService;
+import com.dimitris.restaurant_management.services.RestaurantService;
 import com.dimitris.restaurant_management.services.TagService;
+import com.dimitris.restaurant_management.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -20,10 +22,14 @@ import java.util.List;
 public class RegisterController {
     private final RegisterService registerService;
     private final TagService tagService;
+    private final UserService userService;
+    private final RestaurantService restaurantService;
 
-    public RegisterController(RegisterService registerService, TagService tagService) {
+    public RegisterController(RegisterService registerService, TagService tagService, UserService userService, RestaurantService restaurantService) {
         this.registerService = registerService;
         this.tagService = tagService;
+        this.userService = userService;
+        this.restaurantService = restaurantService;
     }
 
     @ModelAttribute("tags")
@@ -53,15 +59,19 @@ public class RegisterController {
             model.addAttribute("owner",registerOwnerDTO);
             return "register/owner";
         }
-        int registerResult = registerService.registerRestaurantOwner(registerOwnerDTO);
-        if (registerResult==1) {
-            return "redirect:owner?userDuplicate=true";
-        } else if (registerResult==2) {
-            return "redirect:owner?restaurantDuplicate=true";
-        } else {
-            registerService.loginOwner(registerOwnerDTO,request,response);
-            return "redirect:/";
+        if (userService.checkUserExists(registerOwnerDTO.getUsername())) {
+            model.addAttribute("owner",registerOwnerDTO);
+            model.addAttribute("errorMessage", "This user already exists");
+            return "register/owner";
         }
+        if (restaurantService.RestaurantExistsByName(registerOwnerDTO.getRestaurantName())) {
+            model.addAttribute("owner",registerOwnerDTO);
+            model.addAttribute("errorMessage", "This restaurant already exists");
+            return "register/owner";
+        }
+        registerService.registerRestaurantOwner(registerOwnerDTO);
+        registerService.loginOwner(registerOwnerDTO,request,response);
+        return "redirect:/";
     }
 //TODO: Change duplicate logic same as edit Owner
     @PostMapping("/createUser")
@@ -74,11 +84,13 @@ public class RegisterController {
             model.addAttribute("owner",registerUserDTO);
             return "register/user";
         }
-        boolean userNotExists = registerService.registerUser(registerUserDTO);
-        if (userNotExists) {
-            registerService.loginUser(registerUserDTO, request, response);
-            return "redirect:/";
+        if (userService.checkUserExists(registerUserDTO.getUsername())) {
+            model.addAttribute("owner",registerUserDTO);
+            model.addAttribute("errorMessage", "This user already exists");
+            return "register/user";
         }
+        registerService.registerUser(registerUserDTO);
+        registerService.loginUser(registerUserDTO, request, response);
         return "redirect:user?userDuplicate=true";
     }
 }
