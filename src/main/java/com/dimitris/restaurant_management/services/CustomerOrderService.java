@@ -38,25 +38,7 @@ public class CustomerOrderService {
     @PostAuthorize("returnObject.restaurant.user.username == authentication.name")
     public CustomerOrder findOrder(Long id) {
         return customerOrderRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Customer Order Not Found")
-        );
-    }
-
-    @Transactional
-    public void AddOrder(List<Long> products, List<Long> quantity, Restaurant restaurant, User user) {
-        CustomerOrder order = new CustomerOrder();
-        order.setRestaurant(restaurant);
-        order.setDate(LocalDateTime.now());
-        order.setUser(user);
-        List<OrderProduct> p = new ArrayList<>();
-        for (int i = 0; i < products.size(); i++) {
-            Product prod = productRepository.findById(products.get(i))
-                    .orElseThrow(() -> new RuntimeException("Product Not found"));
-
-            p.add(new OrderProduct(null,prod,order,quantity.get(i),prod.getPrice()));
-        }
-        order.setProduct(p);
-        customerOrderRepository.save(order);
+                () -> new RuntimeException("Customer Order Not Found"));
     }
 
     @Transactional

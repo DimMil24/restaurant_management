@@ -73,7 +73,7 @@ public class RegisterController {
         registerService.loginOwner(registerOwnerDTO,request,response);
         return "redirect:/";
     }
-//TODO: Change duplicate logic same as edit Owner
+
     @PostMapping("/createUser")
     public String newUser (@Valid @ModelAttribute(name = "user") RegisterUserDTO registerUserDTO,
                            BindingResult bindingResult,

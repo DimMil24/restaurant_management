@@ -50,7 +50,7 @@ public class ProfileController {
         model.addAttribute("editOwner", new EditOwnerDTO( user.getRestaurant().getName(), user.getRestaurant().getDescription()));
         return "profile/owner";
     }
-//CONDITIONALS
+
     @PostMapping("/editOwner")
     public String editOwner(@Valid @ModelAttribute(name = "editOwner") EditOwnerDTO editOwnerDTO,
                             BindingResult bindingResult,
